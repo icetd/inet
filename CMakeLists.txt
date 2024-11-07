@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 project(inet)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_BUILD_TYPE Debug)
 
 set (SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR}/src)
 set (INCLUDE_DIR  ${CMAKE_CURRENT_LIST_DIR}/inc)
 
 file(GLOB_RECURSE SRC_FILES
-	"${SOURCE_DIR}/base/*.cc"
+	"${SOURCE_DIR}/util/*.cc"
 	"${SOURCE_DIR}/net/*.cc"
 	"${SOURCE_DIR}/log/*.cc"
 )
