@@ -1,7 +1,7 @@
 #include "CurrentThread.h"
 #include <stdio.h>
 
-namespace inet 
+namespace inet
 {
 namespace CurrentThread
 {
