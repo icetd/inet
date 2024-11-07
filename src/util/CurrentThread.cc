@@ -5,7 +5,7 @@ namespace inet
 {
 namespace CurrentThread
 {
-    // internal
+	// internal
 	thread_local int t_cachedTid = 0;
 	thread_local char t_tidString[32];
 	thread_local int t_tidStringLength = 6;
