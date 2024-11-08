@@ -36,7 +36,7 @@ void TcpServer::start(int IOThreadNum, int compute_threadNum)
     {
         m_evloop_threadpool->setThreadNum(IOThreadNum);
         m_evloop_threadpool->start();
-        m_compute_threadpool->start(compute_threadNum); // 添加这句，开启计算线程池，若compute_threadNum是0，那就是没有开启咯
+        m_compute_threadpool->start(compute_threadNum); // 添加这句，开启计算线程池，若compute_threadNum是0，那就是没有开启
 
         m_acceptor->listen();
     }
