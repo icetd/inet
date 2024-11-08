@@ -3,12 +3,10 @@
 
 #include <vector>
 #include "Platform.h"
-#include "Channel.h"
 
 namespace inet
 {   
     class Channel;
-
     class Epoll
     {
     public:

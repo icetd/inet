@@ -5,17 +5,19 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
+#include <vector>
 #include <functional>
-#include "Channel.h"
-#include "Epoll.h"
+
 #include "CurrentThread.h"
+#include "Callbacks.h"
+#include "Epoll.h"
+#include "Channel.h"
+#include "Timer.h"
+#include "TimeStamp.h"
 
 namespace inet
 {   
     class TimerQueue;
-    class Channel;
-    class Epoll;
-    
     class EventLoop
     {
     public:
@@ -30,7 +32,21 @@ namespace inet
         void removeChannel(Channel *channel);
 
         bool isInLoopThread() const { return m_threadId == CurrentThread::tid(); }
-    
+
+        void runInLoop(Functor cb);
+        void queueInLoop(Functor cb);
+
+        void wakeup();
+        pid_t getThreadId() const { return m_threadId; }
+
+        void quit();
+        
+        void assertInLoopThread();
+
+        int64_t runAt(TimeStamp time, TimerCallback cb);
+        int64_t runAfter(double delay_seconds, TimerCallback cb);
+        int64_t runEvery(double interval_seconds, TimerCallback cb);
+
     private:
         pid_t m_threadId;
         std::atomic_bool m_quit;
@@ -41,10 +57,13 @@ namespace inet
 
         int m_wakeupFd;
         std::unique_ptr<Channel> m_wakeupChannel;
-        std::unique_ptr<TimerQueue> m_timerqueue;
-        std::unique_ptr<Functor> m_pendingFunctors;
+        std::unique_ptr<TimerQueue> m_timerQueue;
+        std::vector<Functor> m_pendingFunctors;
         std::mutex m_mutex;
-    };
+
+        void doPendingFunctors();  //do task callback
+        void handleRead(); // for wake ip
+    };  
 }
 
 #endif

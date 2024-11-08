@@ -27,11 +27,11 @@ include_directories(
 
 message("${INC_FILES}")
 
-add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES} ${INC_FILES})
+add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES})
 set_target_properties(${PROJECT_NAME}_static PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME}_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
-add_library(${PROJECT_NAME} SHARED ${SRC_FILES} ${INC_FILES})
+add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 add_executable(${PROJECT_NAME}_test test/test.cc)

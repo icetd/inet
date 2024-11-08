@@ -4,8 +4,8 @@
 #include <functional>
 #include <memory>
 #include <sstream>
+
 #include "Platform.h"
-#include "EventLoop.h"
 
 namespace inet
 {   
@@ -14,8 +14,9 @@ namespace inet
     {
     public:
         using EventCallback = std::function<void()>;
+
         Channel(EventLoop* loop, int fd);
-        ~Channel() {}
+        ~Channel() = default;
 
         void setEvents(int events);
         int getEevents() const; 

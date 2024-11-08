@@ -1,5 +1,7 @@
 #include <string.h>
+#include <errno.h>
 #include "Epoll.h"
+#include "Channel.h"
 
 using namespace inet;
 
