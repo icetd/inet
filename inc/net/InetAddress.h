@@ -1,5 +1,5 @@
 #ifndef INET_INETADDRESS_H
-#define INTE_INETADDRESS_H
+#define INET_INETADDRESS_H
 
 #include <string>
 #include "Platform.h"

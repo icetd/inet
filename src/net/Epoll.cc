@@ -45,8 +45,8 @@ void Epoll::updateChannel(Channel *ch)
         int ret = epoll_ctl(m_epfd, EPOLL_CTL_ADD, fd, &ev);
         if (ret == -1) {
             perror("epoll_ctl add");
-            ch->setInEopll(true);
         }
+        ch->setInEopll(true);
     }
 }
 
@@ -56,8 +56,8 @@ void Epoll::destroy(Channel *ch)
         int ret = epoll_ctl(m_epfd, EPOLL_CTL_DEL, ch->getFd(), nullptr);
         if (ret == -1) {
             perror("epoll_ctl del");
-            ch->setInEopll(false);
         }
+        ch->setInEopll(false);
     }
 }
 

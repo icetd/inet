@@ -2,6 +2,13 @@
 
 using namespace inet;
 
+Socket::Socket() :
+    m_sockfd(socket(AF_INET,SOCK_STREAM,0))
+{
+    if (m_sockfd == -1)
+        perror("scoket");
+}
+
 Socket::~Socket()
 {
     if (m_sockfd != -1) {

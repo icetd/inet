@@ -1,31 +1,40 @@
+#include "EventLoop.h"
 #include "ThreadPool.h"
-
-#include <iostream>
-#include <unistd.h>
+#include "TcpServer.h"
+#include "Logger.h"
 
 using namespace inet;
 
-void task()
+void c_connection(const TcpConnectionPtr &conn) 
 {
-    while (1)
-    {
-        std::cout << "test" << std::endl;
-        sleep(1);
-    }
-
+    LOG_INFO << "new connect";
 }
+
+void c_weite_complete(const TcpConnectionPtr &coon) 
+{
+    LOG_INFO << "write complete";
+}
+
+void c_message(const TcpConnectionPtr &conn, Buffer *buf)
+{
+    LOG_INFO << buf->retrieveAllAsString();
+    conn->send(buf);
+}
+
 int main()
 {
-    ThreadPool pool;
-    pool.add(task);
+    Logger::setLogLevel(Logger::LogLevel::WARN);
+    Logger::setLogFileName("./server");
 
-    pool.start(10);
+    LOG_WARN << "test";
 
-    while (1)
-    {
-        sleep(1);
-    }
-    
+    EventLoop loop;
+	TcpServer server(&loop, InetAddress(8888));
+    server.setConnectionCallback(c_connection);
+    server.setMessageCallback(c_message);
+    server.setWriteCompleteCallback(c_weite_complete);
+    server.start(4);
+	loop.loop();
 
     return 0;
 }

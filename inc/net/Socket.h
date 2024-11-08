@@ -10,6 +10,7 @@ namespace inet
     class Socket
     {
     public:
+        Socket();
         explicit Socket(int sockfd) : m_sockfd(sockfd) {}
         ~Socket();
 

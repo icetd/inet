@@ -7,17 +7,14 @@
 namespace inet
 {
     class Buffer;
-    class Connection;
-
-    using ConnectionPtr = std::shared_ptr<Connection>;
-
-    using CloseCallback = std::function<void(const ConnectionPtr &)>;
-    using WriteCompleteCallback = std::function<void(const ConnectionPtr &)>;
-    using ConnectionCallback = std::function<void(const ConnectionPtr &)>;
+    class TcpConnection;
 
     using TimerCallback = std::function<void()>;
-
-    // the data has been read to (buf, len)
-    using MessageCallback = std::function<void(const ConnectionPtr &, Buffer *)>;
+    
+    using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
+    using CloseCallback = std::function<void(const TcpConnectionPtr &)>;
+    using WriteCompleteCallback = std::function<void(const TcpConnectionPtr &)>;
+    using ConnectionCallback = std::function<void(const TcpConnectionPtr &)>;
+    using MessageCallback = std::function<void(const TcpConnectionPtr &, Buffer *)>;
 }
 #endif

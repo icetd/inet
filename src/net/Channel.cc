@@ -77,30 +77,30 @@ void Channel::update()
 
 void Channel::handleEventWithGurad()
 {
-    LOG_INFO << reventsToString();
+    //LOG_INFO << reventsToString();
 
     if((m_revents & EPOLLHUP) && !(m_revents & EPOLLIN)) { // hup and no read
         if (m_closeCallback) {
             LOG_DEBUG << "channel closeCallback";
             m_closeCallback();
         }
+    }
 
-        if (m_revents & EPOLLERR) { // error event
-            if (m_errorCallback) {
-                m_errorCallback();
-            }
+    if (m_revents & EPOLLERR) { // error event
+        if (m_errorCallback) {
+            m_errorCallback();
         }
+    }
 
-        if (m_revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP)) { // read event
-            if (m_readCallback) {
-                m_readCallback();
-            }       
+    if (m_revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP)) { // read event
+        if (m_readCallback) {
+            m_readCallback();
         }
+    }
 
-        if (m_revents & EPOLLOUT) { //write event
-            if (m_writeCallback) {
-                m_writeCallback();
-            }
+    if (m_revents & EPOLLOUT) { // write event
+        if (m_writeCallback) {
+            m_writeCallback();
         }
     }
 }
