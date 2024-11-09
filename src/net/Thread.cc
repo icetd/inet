@@ -19,7 +19,6 @@ Thread::~Thread()
 void Thread::start()
 {
     m_started = true;
-
     m_thread = std::move(std::thread([this]() {
         m_tid = CurrentThread::tid();
         m_latch.countDown();
