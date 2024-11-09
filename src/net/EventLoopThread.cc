@@ -2,10 +2,11 @@
 
 using namespace inet;
 
-EventLoopThread::EventLoopThread() :
+EventLoopThread::EventLoopThread() : 
     m_loop(nullptr),
     m_thread([this]() { threadFunc(); })
-{}
+{
+}
 
 EventLoopThread::~EventLoopThread()
 {
@@ -22,7 +23,7 @@ EventLoop *EventLoopThread::statloop()
     m_thread.start();
     {
         std::unique_lock<std::mutex> lock(m_mutex);
-        while(m_loop == nullptr) {
+        while (m_loop == nullptr) {
             m_cond.wait(lock);
         }
     }
