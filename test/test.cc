@@ -29,12 +29,12 @@ int main()
     LOG_WARN << "test";
 
     EventLoop loop;
-	TcpServer server(&loop, InetAddress(8888));
+    TcpServer server(&loop, InetAddress(8888));
     server.setConnectionCallback(c_connection);
     server.setMessageCallback(c_message);
     server.setWriteCompleteCallback(c_weite_complete);
     server.start(4);
-	loop.loop();
+    loop.loop();
 
     return 0;
 }
