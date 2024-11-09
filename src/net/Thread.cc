@@ -3,11 +3,10 @@
 
 using namespace inet;
 
-Thread::Thread(ThreadFunc func) :
-    m_started(false),
-    m_joined(false),
-    m_func(std::move(func)),
-    m_latch(1)
+Thread::Thread(ThreadFunc func) : m_started(false),
+	m_joined(false),
+	m_func(std::move(func)),
+	m_latch(1)
 {
 }
 
@@ -24,9 +23,7 @@ void Thread::start()
 	m_thread = std::move(std::thread([this]() {
 		m_tid = CurrentThread::tid();
 		m_latch.countDown();
-		m_func();
-	    }));
-
+		m_func(); }));
 	m_latch.wait();
 }
 
