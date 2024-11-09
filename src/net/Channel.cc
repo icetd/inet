@@ -4,7 +4,7 @@
 
 using namespace inet;
 
-Channel::Channel(EventLoop *loop, int fd) :
+Channel::Channel(EventLoop *loop, int fd) : 
     m_loop(loop),
     m_fd(fd),
     m_events(0),
@@ -55,16 +55,17 @@ void Channel::handleEvent()
         std::shared_ptr<void> guard = m_tie.lock();
         if (guard)
             handleEventWithGurad(); // 连接已经建立，可以安全地处理事件
-    } else {    
+    } else {
         // 连接尚未建立，直接进行连接建立或初始化操作, 在建立连接后会将 tied_ 设置为 true
         handleEventWithGurad();
     }
 }
 
 void Channel::remove()
-{}
+{
+}
 
-void Channel::tie(const std::shared_ptr<void> & obj)
+void Channel::tie(const std::shared_ptr<void> &obj)
 {
     m_tie = obj;
     m_tied = true;
@@ -77,9 +78,9 @@ void Channel::update()
 
 void Channel::handleEventWithGurad()
 {
-    //LOG_INFO << reventsToString();
+    // LOG_INFO << reventsToString();
 
-    if((m_revents & EPOLLHUP) && !(m_revents & EPOLLIN)) { // hup and no read
+    if ((m_revents & EPOLLHUP) && !(m_revents & EPOLLIN)) { // hup and no read
         if (m_closeCallback) {
             LOG_DEBUG << "channel closeCallback";
             m_closeCallback();
@@ -87,13 +88,15 @@ void Channel::handleEventWithGurad()
     }
 
     if (m_revents & EPOLLERR) { // error event
-        if (m_errorCallback) {
+        if (m_errorCallback)
+        {
             m_errorCallback();
         }
     }
 
     if (m_revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP)) { // read event
-        if (m_readCallback) {
+        if (m_readCallback)
+        {
             m_readCallback();
         }
     }
@@ -107,30 +110,30 @@ void Channel::handleEventWithGurad()
 
 std::string Channel::reventsToString() const
 {
-	return eventsToString(m_fd, m_revents);
+    return eventsToString(m_fd, m_revents);
 }
 
 std::string Channel::eventsToString() const
 {
-	return eventsToString(m_fd, m_events);
+    return eventsToString(m_fd, m_events);
 }
 
 std::string Channel::eventsToString(int fd, int ev)
 {
-	std::ostringstream oss;
-	oss << fd << ": ";
-	if (ev & EPOLLIN)
-		oss << "IN ";
-	if (ev & EPOLLPRI)
-		oss << "PRI ";
-	if (ev & EPOLLOUT)
-		oss << "OUT ";
-	if (ev & EPOLLHUP)
-		oss << "HUP ";
-	if (ev & EPOLLRDHUP)
-		oss << "RDHUP ";
-	if (ev & EPOLLERR)
-		oss << "ERR ";
+    std::ostringstream oss;
+    oss << fd << ": ";
+    if (ev & EPOLLIN)
+        oss << "IN ";
+    if (ev & EPOLLPRI)
+        oss << "PRI ";
+    if (ev & EPOLLOUT)
+        oss << "OUT ";
+    if (ev & EPOLLHUP)
+        oss << "HUP ";
+    if (ev & EPOLLRDHUP)
+        oss << "RDHUP ";
+    if (ev & EPOLLERR)
+        oss << "ERR ";
 
-	return oss.str();
+    return oss.str();
 }
