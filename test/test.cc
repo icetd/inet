@@ -5,12 +5,12 @@
 
 using namespace inet;
 
-void c_connection(const TcpConnectionPtr &conn) 
+void c_connection(const TcpConnectionPtr &conn)
 {
     LOG_INFO << "new connect";
 }
 
-void c_weite_complete(const TcpConnectionPtr &coon) 
+void c_weite_complete(const TcpConnectionPtr &coon)
 {
     LOG_INFO << "write complete";
 }
