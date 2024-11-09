@@ -4,20 +4,20 @@
 
 using namespace inet;
 
-AsyncLogger::AsyncLogger(const std::string fileName, off_t rollSize, int flushInterval) :
+AsyncLogger::AsyncLogger(const std::string fileName, off_t rollSize, int flushInterval) : 
     m_flushInterval(flushInterval),
     m_is_running(false),
     m_basename(fileName),
     m_rollsize(rollSize),
     m_currentBuffer(std::make_unique<Buffer>()),
-	m_nextBuffer(std::make_unique<Buffer>())
+    m_nextBuffer(std::make_unique<Buffer>())
 {
     m_currentBuffer->bzero();
     m_nextBuffer->bzero();
     m_buffers.reserve(16);
 }
 
-void AsyncLogger::append(const char * logline, int len)
+void AsyncLogger::append(const char *logline, int len)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
 
@@ -26,7 +26,7 @@ void AsyncLogger::append(const char * logline, int len)
     } else {
         m_buffers.emplace_back(std::move(m_currentBuffer));
         m_currentBuffer.reset();
-        
+
         if (m_nextBuffer) {
             m_currentBuffer = std::move(m_nextBuffer);
         } else {
@@ -41,17 +41,18 @@ void AsyncLogger::ThreadFunc()
 {
     LogFile output(m_basename, m_rollsize);
 
-	//准备好后端备用的缓冲区1、2
-	auto newBuffer1 = std::make_unique<Buffer>();
-	auto newBuffer2 = std::make_unique<Buffer>();
+    // 准备好后端备用的缓冲区1、2
+    auto newBuffer1 = std::make_unique<Buffer>();
+    auto newBuffer2 = std::make_unique<Buffer>();
 
     newBuffer1->bzero();
     newBuffer2->bzero();
 
     BufferVector buffersToWrite;
     buffersToWrite.reserve(16);
-    
-    while (m_is_running) { 
+
+    while (m_is_running)
+    {
         {
             std::unique_lock<std::mutex> lock(m_mutex);
             if (m_buffers.empty()) {
@@ -75,31 +76,32 @@ void AsyncLogger::ThreadFunc()
         }
 
         // 将缓冲区内容写入文件
-		for (size_t i = 0; i < buffersToWrite.size(); ++i){
-			output.append(buffersToWrite[i]->data(), buffersToWrite[i]->length());
-		}
+        for (size_t i = 0; i < buffersToWrite.size(); ++i) {
+            output.append(buffersToWrite[i]->data(), buffersToWrite[i]->length());
+        }
 
-		// 将过多的缓冲区丢弃
-		if (buffersToWrite.size() > 2){
-			buffersToWrite.resize(2);
-		}
+        // 将过多的缓冲区丢弃
+        if (buffersToWrite.size() > 2) {
+            buffersToWrite.resize(2);
+        }
 
-		// 恢复后端备用缓冲区
-		if (!newBuffer1){
-			newBuffer1 = std::move(buffersToWrite.back());
-			buffersToWrite.pop_back();
-			// 将缓冲区的数据指针归零
-			newBuffer1->reset();
-		}
-		if (!newBuffer2){
-			newBuffer2 = std::move(buffersToWrite.back());
-			buffersToWrite.pop_back();
-			newBuffer2->reset();
-		}
+        // 恢复后端备用缓冲区
+        if (!newBuffer1) {
+            newBuffer1 = std::move(buffersToWrite.back());
+            buffersToWrite.pop_back();
+            // 将缓冲区的数据指针归零
+            newBuffer1->reset();
+        }
 
-		// 丢弃无用的缓冲区
-		buffersToWrite.clear();
-		output.flush();
+        if (!newBuffer2) {
+            newBuffer2 = std::move(buffersToWrite.back());
+            buffersToWrite.pop_back();
+            newBuffer2->reset();
+        }
+
+        // 丢弃无用的缓冲区
+        buffersToWrite.clear();
+        output.flush();
     }
 
     output.flush();
