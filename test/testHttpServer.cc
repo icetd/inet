@@ -34,6 +34,7 @@ void onRequest(const HttpRequest &req, HttpResponse *resp)
         resp->addHeader("Server", "inet");
         resp->setBody("hello, world!\n");
     }
+
     else
     {
         resp->setStatusCode(HttpResponse::HttpStatusCode::k404NotFound);
