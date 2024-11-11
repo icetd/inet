@@ -6,7 +6,6 @@ int main(int argc, char* argv[]) {
     
     Logger::setLogFileName("./server");
     Logger::setLogLevel(Logger::LogLevel::WARN);
-    LOG_WARN << "test log";
     
     EventLoop loop;
     StaticWebServer server(&loop, 9999);
