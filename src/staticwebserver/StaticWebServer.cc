@@ -55,7 +55,6 @@ void StaticWebServer::setRootDirectory(const std::string& rootDir) {
 std::string StaticWebServer::readFile(const std::string& filePath) {
     std::ifstream file(filePath, std::ios::binary);
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file " << filePath << std::endl;
         return "";  // 文件无法打开，返回空字符串
     }
     std::stringstream buffer;
@@ -141,9 +140,20 @@ void StaticWebServer::onRequest(const HttpRequest& req, HttpResponse* resp) {
 
         resp->setBody(fileContent);  // 设置文件内容为响应体
     } else {
-        resp->setStatusCode(HttpResponse::HttpStatusCode::k404NotFound);
-        resp->setStatusMessage("Not Found");
-        resp->setBody("<html><body><h1>404 Not Found</h1></body></html>");
+        // 如果文件没有找到，加载 404 页面
+        std::string notFoundPath = m_rootDirectory + "/404.html";
+        fileContent = readFile(notFoundPath);
+
+        if (!fileContent.empty()) {
+            resp->setStatusCode(HttpResponse::HttpStatusCode::k404NotFound);
+            resp->setStatusMessage("Not Found");
+            resp->setBody(fileContent);  // 设置自定义 404 页面内容
+        } else {
+            // 如果 404 页面也没有，返回一个简单的文本 404 错误
+            resp->setStatusCode(HttpResponse::HttpStatusCode::k404NotFound);
+            resp->setStatusMessage("Not Found");
+            resp->setBody("<html><body><h1>404 Not Found</h1></body></html>");
+        }
     }
 
     std::cout << "RESP ====================================================\n";

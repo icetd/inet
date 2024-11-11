@@ -14,6 +14,7 @@ file(GLOB_RECURSE SRC_FILES
 	"${SOURCE_DIR}/net/*.cc"
 	"${SOURCE_DIR}/log/*.cc"
 	"${SOURCE_DIR}/http/*.cc"
+	"${SOURCE_DIR}/staticwebserver/*.cc"
 )
 
 file (GLOB_RECURSE INC_FILES
@@ -21,6 +22,7 @@ file (GLOB_RECURSE INC_FILES
 	"${INCLUDE_DIR}/net/*.h"
 	"${INCLUDE_DIR}/log/*.h"
 	"${INCLUDE_DIR}/http/*.h"
+	"${INCLUDE_DIR}/staticwebserver/*.h"
 )
 
 include_directories(
@@ -28,6 +30,7 @@ include_directories(
 	"${INCLUDE_DIR}/net"
 	"${INCLUDE_DIR}/log"
 	"${INCLUDE_DIR}/http"
+	"${INCLUDE_DIR}/staticwebserver"
 )
 
 add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES})
@@ -46,15 +49,7 @@ target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
 
-
-include_directories(
-    "test/StaticWebServer"
-)
-add_executable(testStaticWebServer  
-    test/staticwebserver/StaticWebServer.cc 
-    test/staticwebserver/testStaticWebServer.cc
-)
-
+add_executable(testStaticWebServer test/testStaticWebServer.cc)
 target_link_libraries(testStaticWebServer ${PROJECT_NAME} pthread)
 
 file(COPY www DESTINATION ${CMAKE_BINARY_DIR})
