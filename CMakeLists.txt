@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 project(inet)
 
 set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_BUILD_TYPE Debug)
+set (CMAKE_BUILD_TYPE Release)
+
+option(BUILD_TESTS "Enable testing" OFF)
 
 set (SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR}/src)
 set (INCLUDE_DIR  ${CMAKE_CURRENT_LIST_DIR}/inc)
@@ -38,12 +40,15 @@ add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
+if(BUILD_TESTS)
+
 add_executable(testTcpServer test/testTcpServer.cc)
 target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
 
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
 
+endif()
 
 # out set
 set (OUT_BIN ${CMAKE_BINARY_DIR}/target/lib)
