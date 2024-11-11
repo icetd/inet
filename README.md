@@ -10,3 +10,6 @@ cmake .. && make -j8
 
 cmake -DBUILD_TESTS=ON .. && make -j8
 ```
+
+## Static WebServer
+Put your personal static website in the www directory
