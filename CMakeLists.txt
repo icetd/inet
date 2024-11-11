@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(inet)
 
 set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_BUILD_TYPE Debug)
+set (CMAKE_BUILD_TYPE Release)
 
 option(BUILD_TESTS "Enable testing" OFF)
 
@@ -10,11 +10,10 @@ set (SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR}/src)
 set (INCLUDE_DIR  ${CMAKE_CURRENT_LIST_DIR}/inc)
 
 file(GLOB_RECURSE SRC_FILES
-	"${SOURCE_DIR}/util/*.cc"
-	"${SOURCE_DIR}/net/*.cc"
-	"${SOURCE_DIR}/log/*.cc"
-	"${SOURCE_DIR}/http/*.cc"
-	"${SOURCE_DIR}/staticwebserver/*.cc"
+	"${SOURCE_DIR}/util/*.c*"
+	"${SOURCE_DIR}/net/*.c*"
+	"${SOURCE_DIR}/log/*.c*"
+	"${SOURCE_DIR}/http/*.c*"
 )
 
 file (GLOB_RECURSE INC_FILES
@@ -22,7 +21,6 @@ file (GLOB_RECURSE INC_FILES
 	"${INCLUDE_DIR}/net/*.h"
 	"${INCLUDE_DIR}/log/*.h"
 	"${INCLUDE_DIR}/http/*.h"
-	"${INCLUDE_DIR}/staticwebserver/*.h"
 )
 
 include_directories(
@@ -30,7 +28,6 @@ include_directories(
 	"${INCLUDE_DIR}/net"
 	"${INCLUDE_DIR}/log"
 	"${INCLUDE_DIR}/http"
-	"${INCLUDE_DIR}/staticwebserver"
 )
 
 add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES})
@@ -42,19 +39,25 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 if(BUILD_TESTS)
-
 add_executable(testTcpServer test/testTcpServer.cc)
 target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
 
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
-
-add_executable(testStaticWebServer test/testStaticWebServer.cc)
-target_link_libraries(testStaticWebServer ${PROJECT_NAME} pthread)
-
-file(COPY www DESTINATION ${CMAKE_BINARY_DIR})
-
 endif()
+
+
+file(GLOB_RECURSE APP_SRC_FILES
+	"${CMAKE_CURRENT_LIST_DIR}/staticwebserver/*.c*"
+)
+include_directories(
+	"${CMAKE_CURRENT_LIST_DIR}/staticwebserver"
+)
+add_executable(StaticWebServer ${APP_SRC_FILES})
+target_link_libraries(StaticWebServer ${PROJECT_NAME} pthread)
+file(COPY www DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/configs DESTINATION ${CMAKE_BINARY_DIR})
+
 
 # out set
 set (OUT_BIN ${CMAKE_BINARY_DIR}/target/lib)

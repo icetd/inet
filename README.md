@@ -12,4 +12,21 @@ cmake -DBUILD_TESTS=ON .. && make -j8
 ```
 
 ## Static WebServer
-Put your personal static website in the www directory
+### config file
+
+```
+[server]
+port = 8080
+threadnum = 4
+rootpath  = ./www
+
+[log]
+level = 3
+; TRACE = 0,
+; DEBUG = 1,
+; INFO = 2,
+; WARN = 3,
+; ERROR = 4,
+; FATAL = 5,
+basename = server
+```
