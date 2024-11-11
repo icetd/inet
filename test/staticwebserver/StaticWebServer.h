@@ -29,6 +29,10 @@ private:
 
     // 获取文件的 MIME 类型
     std::string getMimeType(const std::string& filePath);
+    
+    // url decode
+    std::string urlDecode(const std::string& url);
+    std::string getFileOrIndex(const std::string& path);
 
     // 处理 HTTP 请求
     void onRequest(const HttpRequest& req, HttpResponse* resp);
