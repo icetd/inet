@@ -36,6 +36,8 @@ namespace inet
             m_headers[key] = value;
         }
 
+        const std::unordered_map<std::string, std::string> &getHeaders() const { return m_headers; }
+
         void setBody(const std::string &body) { m_body = body; }
 
         void appendToBuffer(Buffer *output) const;

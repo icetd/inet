@@ -6,12 +6,12 @@ using namespace inet;
 
 void onRequest(const HttpRequest &req, HttpResponse *resp)
 {
+    std::cout << "REQ  ====================================================\n";
     std::cout << "Headers " << req.methodString() << " " << req.getPath() << std::endl;
     const auto &headers = req.getHeaders();
     for (const auto &header : headers) {
         std::cout << header.first << ": " << header.second << std::endl;
     }
-    std::cout << "====================================================\n";
 
     if (req.getPath() == "/")
     {
@@ -41,6 +41,13 @@ void onRequest(const HttpRequest &req, HttpResponse *resp)
         resp->setStatusMessage("Not Found");
         resp->setCloseConnection(true);
     }
+
+    std::cout << "RESP ====================================================\n";
+    const auto &re_headers = resp->getHeaders();
+    for (const auto &header : re_headers) {
+        std::cout << header.first << ": " << header.second << std::endl;
+    }
+    std::cout << "\n";
 }
 
 int main(int argc, char *argv[])

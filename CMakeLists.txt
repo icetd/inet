@@ -30,8 +30,6 @@ include_directories(
 	"${INCLUDE_DIR}/http"
 )
 
-message("${INC_FILES}")
-
 add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES})
 set_target_properties(${PROJECT_NAME}_static PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME}_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
@@ -47,6 +45,19 @@ target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
 
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
+
+
+include_directories(
+    "test/StaticWebServer"
+)
+add_executable(testStaticWebServer  
+    test/staticwebserver/StaticWebServer.cc 
+    test/staticwebserver/testStaticWebServer.cc
+)
+
+target_link_libraries(testStaticWebServer ${PROJECT_NAME} pthread)
+
+file(COPY www DESTINATION ${CMAKE_BINARY_DIR})
 
 endif()
 
@@ -66,8 +77,5 @@ set_target_properties(${PROJECT_NAME}
 add_custom_target(copy_files ALL  
 	VERBATIM
 	COMMAND ${CMAKE_COMMAND} -E make_directory "${OUT_INC}"
-	COMMAND ${CMAKE_COMMAND} -E
-                  copy_directory
-                  "${CMAKE_CURRENT_LIST_DIR}/inc"
-                  "${OUT_INC}"
+	COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_LIST_DIR}/inc" "${OUT_INC}"
 )
