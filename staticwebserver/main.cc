@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     
     std::cout << "Server start on: " << port << "\n"
               << "Server thread num: " << thread_num << "\n"
-              << "Logger level: " << root_path << "\n"
+              << "Server root path: " << root_path << "\n"
               << "Logger basename: " << log_basename << "\n"
               << "Logger level: " << Logger::getGlobalLogLevel() << "\n";
 
