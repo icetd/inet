@@ -11,18 +11,21 @@ file(GLOB_RECURSE SRC_FILES
 	"${SOURCE_DIR}/util/*.cc"
 	"${SOURCE_DIR}/net/*.cc"
 	"${SOURCE_DIR}/log/*.cc"
+	"${SOURCE_DIR}/http/*.cc"
 )
 
 file (GLOB_RECURSE INC_FILES
 	"${INCLUDE_DIR}/util/*.h"
 	"${INCLUDE_DIR}/net/*.h"
 	"${INCLUDE_DIR}/log/*.h"
+	"${INCLUDE_DIR}/http/*.h"
 )
 
 include_directories(
 	"${INCLUDE_DIR}/util"
 	"${INCLUDE_DIR}/net"
 	"${INCLUDE_DIR}/log"
+	"${INCLUDE_DIR}/http"
 )
 
 message("${INC_FILES}")
@@ -34,9 +37,13 @@ set_target_properties(${PROJECT_NAME}_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "inet")
 set_target_properties(${PROJECT_NAME} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-add_executable(${PROJECT_NAME}_test test/test.cc)
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME} pthread)
+add_executable(testTcpServer test/testTcpServer.cc)
+target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
+
+add_executable(testHttpServer test/testHttpServer.cc)
+target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
+
 
 # out set
 set (OUT_BIN ${CMAKE_BINARY_DIR}/target/lib)

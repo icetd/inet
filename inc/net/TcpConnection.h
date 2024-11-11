@@ -79,6 +79,9 @@ namespace inet
 
         int fd() const { return m_socket->fd(); }
 
+        void setContext(std::shared_ptr<void> context) { m_context = context; }
+        std::shared_ptr<void> getContext() const { return m_context; }
+
     private:
         void handleRead();
         void handleWrite();
@@ -95,6 +98,8 @@ namespace inet
         EventLoop *m_loop;
 
         StateE m_state; // FIXME: use atomic variable
+
+        std::shared_ptr<void> m_context;
 
         std::unique_ptr<Socket> m_socket;
         std::unique_ptr<Channel> m_channel;

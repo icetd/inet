@@ -2,6 +2,7 @@
 #include "ThreadPool.h"
 #include "TcpServer.h"
 #include "Logger.h"
+#include <iostream>
 
 using namespace inet;
 
@@ -17,7 +18,7 @@ void c_weite_complete(const TcpConnectionPtr &coon)
 
 void c_message(const TcpConnectionPtr &conn, Buffer *buf)
 {
-    LOG_INFO << buf->retrieveAllAsString();
+    std::cout << buf->retrieveAllAsString();
     conn->send(buf);
 }
 
