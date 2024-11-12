@@ -155,9 +155,5 @@ void StaticWebServer::onRequest(const HttpRequest& req, HttpResponse* resp) {
     }
 
     std::cout << "RESP ====================================================\n";
-    const auto& re_headers = resp->getHeaders();
-    for (const auto& header : re_headers) {
-        std::cout << header.first << ": " << header.second << std::endl;
-    }
-    std::cout << "\n";
+    resp->printHeadersWithoutBody();
 }

@@ -41,6 +41,8 @@ namespace inet
         void setBody(const std::string &body) { m_body = body; }
 
         void appendToBuffer(Buffer *output) const;
+
+        void printHeadersWithoutBody() const;
     
     private:
         std::unordered_map<std::string, std::string> m_headers;

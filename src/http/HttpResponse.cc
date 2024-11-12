@@ -31,3 +31,29 @@ void HttpResponse::appendToBuffer(Buffer *output) const
     output->append("\r\n");
     output->append(m_body);
 }
+
+void HttpResponse::printHeadersWithoutBody() const
+{
+    char buf[32];
+
+    snprintf(buf, sizeof buf, "HTTP/1.1 %d ", (int)m_statusCode);
+    std::cout << buf;
+    std::cout << m_statusMessage << "\r\n";
+
+    if (m_closeConnection) {
+        std::cout << "Connection: close\r\n";
+    } else {
+        std::cout << "Access-Control-Allow-Origin: *\r\n";
+        std::cout << "Access-Control-Allow-Methods: GET, POST, PUT, DELETE\r\n";
+        std::cout << "Access-Control-Allow-Headers: Content-Type, Authorization\r\n";
+        snprintf(buf, sizeof buf, "Content-Length: %zd\r\n", m_body.size());
+        std::cout << buf;
+        std::cout << "Connection: Keep-Alive\r\n";
+    }
+
+    for (const auto &header : m_headers) {
+        std::cout << header.first << ": " << header.second << "\r\n";
+    }
+
+    std::cout << "\r\n";
+}
