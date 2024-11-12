@@ -1,5 +1,5 @@
-## ENV
-linux amd64
+## test ENV
+linux amd64 && arrch64
 
 ## build
 ```
