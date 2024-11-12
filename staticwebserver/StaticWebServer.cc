@@ -134,6 +134,8 @@ void StaticWebServer::onRequest(const HttpRequest& req, HttpResponse* resp) {
         std::string mimeType = getMimeType(filePath);
         resp->setContentType(mimeType);
 
+        resp->addHeader("Server", "inet");
+
         resp->setBody(fileContent);  // 设置文件内容为响应体
     } else {
         // 如果文件没有找到，加载 404 页面
