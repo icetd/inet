@@ -84,7 +84,7 @@ std::string StaticWebServer::urlDecode(const std::string& url) {
                 temp += ch;
                 i += 2;  // 跳过两个十六进制字符
             } else if (decoded[i] == '+') {
-                temp += ' ';  // 处理 URL 编码中的加号（表示空格）
+                temp += '+';  // 处理 URL 编码中的加号（表示空格）but not process in inet
             } else {
                 temp += decoded[i];
             }
