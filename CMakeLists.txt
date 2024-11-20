@@ -42,6 +42,9 @@ if(BUILD_TESTS)
 add_executable(testTcpServer test/testTcpServer.cc)
 target_link_libraries(testTcpServer ${PROJECT_NAME} pthread)
 
+add_executable(testTcpClient test/testTcpClient.cc)
+target_link_libraries(testTcpClient ${PROJECT_NAME} pthread)
+
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
 endif()

@@ -13,6 +13,12 @@ namespace inet
         void shutdownWrite(int sockfd);
         int getSocketError(int sockfd);
 
+        int createNonblockingOrDie();
+        int connect(int sockfd, const struct sockaddr_in* addr);
+
+        bool isSelfConnect(int sockfd);
+        void close(int sockfd);
+
         struct sockaddr_in getLocalAddr(int sockfd);
         struct sockaddr_in getPeerAddr(int sockfd);
     } // namespace sockets

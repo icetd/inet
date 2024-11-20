@@ -23,8 +23,8 @@ TcpConnection::TcpConnection(EventLoop *loop, int sockfd, const InetAddress &loa
 
 TcpConnection::~TcpConnection()
 {
-    LOG_DEBUG << "TcpConnection::dtor at  fd= " << m_channel->getFd() << "%d  state= " << static_cast<int>(m_state);
-}
+    LOG_DEBUG << "TcpConnection::dtor at  fd= " << m_channel->getFd() << " state= " << static_cast<int>(m_state);
+} 
 
 void TcpConnection::send(Buffer *message)
 {

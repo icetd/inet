@@ -35,6 +35,38 @@ namespace inet
         }
     }
 
+    int sockets::createNonblockingOrDie()
+    {
+        int sockfd = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (sockfd < 0) {
+            LOG_SYSFATAL << "sockets::createNonblockingOrDie";
+        }
+
+        setNonblock(sockfd);
+        return sockfd;
+    }
+
+    int sockets::connect(int sockfd, const struct sockaddr_in* addr)
+    {
+        return ::connect(sockfd, (sockaddr*)addr, static_cast<socklen_t>(sizeof(sockaddr)));
+    }
+
+    bool sockets::isSelfConnect(int sockfd)
+    {
+        struct sockaddr_in localaddr = getLocalAddr(sockfd);
+        struct sockaddr_in peeraddr = getPeerAddr(sockfd);
+        const struct sockaddr_in *laddr4 = reinterpret_cast<struct sockaddr_in *>(&localaddr);
+        const struct sockaddr_in *raddr4 = reinterpret_cast<struct sockaddr_in *>(&peeraddr);
+        return laddr4->sin_port == raddr4->sin_port && laddr4->sin_addr.s_addr == raddr4->sin_addr.s_addr;
+    }
+
+    void sockets::close(int sockfd)
+    {
+        if (::close(sockfd) < 0) {
+            LOG_SYSERR << "sockets::shutdownWrite";
+        }   
+    }
+
     struct sockaddr_in sockets::getLocalAddr(int sockfd)
     {
         struct sockaddr_in localaddr;
