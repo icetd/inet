@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # 设置静态Web服务器的路径
-SERVER_PATH="/home/tiandeng/inet/build/StaticWebServer"
-PID_FILE="/tmp/static_web_server.pid"
 EXPECTED_DIR="/home/tiandeng/inet/build"
+PID_FILE="/tmp/static_web_server.pid"
+SERVER_PATH="$EXPECTED_DIR/StaticWebServer"
 
 # 切换到指定目录
 cd ${EXPECTED_DIR} || { echo "Failed to change directory to $EXPECTED_DIR"; exit 1; }
