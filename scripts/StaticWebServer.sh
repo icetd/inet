@@ -6,7 +6,7 @@ PID_FILE="/tmp/static_web_server.pid"
 EXPECTED_DIR="/home/tiandeng/inet/build"
 
 # 切换到指定目录
-cd /home/tiandeng/inet/build || { echo "Failed to change directory to $EXPECTED_DIR"; exit 1; }
+cd ${EXPECTED_DIR} || { echo "Failed to change directory to $EXPECTED_DIR"; exit 1; }
 
 start() {
     if [ -f "$PID_FILE" ]; then
