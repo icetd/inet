@@ -40,13 +40,13 @@ namespace inet
             if (m == "GET") {
                 m_method = Method::kGet;
             } else if (m == "POST") {
-                m_method == Method::kPost;
+                m_method = Method::kPost;
             } else if (m == "HEAD") {
-                m_method == Method::kHead;
+                m_method = Method::kHead;
             } else if (m == "PUT") {
-                m_method == Method::kPut;
+                m_method = Method::kPut;
             } else if (m == "DELETE") {
-                m_method == Method::kDelete;
+                m_method = Method::kDelete;
             }
 
             return m_method != Method::kInvalid;
