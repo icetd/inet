@@ -13,12 +13,14 @@ WebSocketServer* WebSocketServer::instance_ = nullptr;
 
 void defaultWebsocketCallback(const Buffer *buf, Buffer *sendBuf)
 {
-    // echo£¬return origin data
+    // echo??return origin data
     sendBuf->append(buf->peek(), buf->readableBytes());
 }
 
-WebSocketServer::WebSocketServer(EventLoop *loop, const InetAddress &listenAddr)
-    : server_(loop, listenAddr)
+WebSocketServer::WebSocketServer(EventLoop *loop, const InetAddress &listenAddr) : 
+    server_(loop, listenAddr),
+    clientCloseCallback_(nullptr),
+    websocketCallback_(nullptr)
 {
     instance_ = this;
     server_.setConnectionCallback([this](const TcpConnectionPtr &conn) { onConnection(conn); });
@@ -76,6 +78,8 @@ void WebSocketServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
             context->handleShared(&handsharedbuf, http.request().getHeader("Sec-WebSocket-Key"));
             conn->send(&handsharedbuf);
             context->setwebsocketHandshared(); 
+            if (clientConnectCallback_)
+                clientConnectCallback_(conn);
         }
     } else {
         handleData(conn, context, buf);
@@ -100,38 +104,36 @@ void WebSocketServer::handleData(const TcpConnectionPtr &conn, WebSocketContext 
     case WSOpcodeType::WSOpcode_Continue:
         // add your process code here
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Continue);
-        printf("WebSocketEndpoint - recv a Continue opcode.\n");
         break;
     case WSOpcodeType::WSOpcode_Text:
         // add your process code here
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Text);
-        printf("WebSocketEndpoint - recv a Text opcode.\n");
         break;
     case WSOpcodeType::WSOpcode_Binary:
         // add your process code here
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Binary);
-        printf("WebSocketEndpoint - recv a Binary opcode.\n");
         break;
     case WSOpcodeType::WSOpcode_Close:
+        
         // add your process code here
+        if(clientCloseCallback_)
+            clientCloseCallback_(conn);
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Close);
-        printf("WebSocketEndpoint - recv a Close opcode.\n");
         break;
     case WSOpcodeType::WSOpcode_Ping:
         // add your process code here
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Pong);
-        printf("WebSocketEndpoint - recv a Ping opcode.\n");
         break;
     case WSOpcodeType::WSOpcode_Pong:
         // add your process code here
-        printf("WebSocketEndpoint - recv a Pong opcode.\n");
         return;
     default:
         LOG_INFO << "WebSocketEndpoint - recv an unknown opcode.\n";
         return;
     }
     if (opcode != WSOpcodeType::WSOpcode_Close && opcode != WSOpcode_Ping && opcode != WSOpcode_Pong) {
-        websocketCallback_(&DataBuf, conn);
+        if (websocketCallback_)
+            websocketCallback_(&DataBuf, conn);
     } else {
         Buffer messageBuf;
         Buffer frameBuf;
@@ -167,7 +169,7 @@ void WebSocketServer::send(const char *data, size_t len, const WSCodeType type, 
 
     try {
         conn.lock()->send(&frameBuf);
-        //context->reset();
+        context->reset();
     } catch (const std::exception &e) {
         std::cerr << "WebSocket send error: " << e.what() << std::endl;
     }
