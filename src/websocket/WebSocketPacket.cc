@@ -56,42 +56,29 @@ void WebSocketPacket::encodeFrame(Buffer *output, Buffer *data) const
     onebyte |= (opcode_ & 0x0F);
     output->append((char *)&onebyte, 1);
 
-    onebyte = 0;
     // set mask flag
+    onebyte = 0;
     onebyte = onebyte | (mask_ << 7);
 
+    // set patload_length
+    onebyte = 0;
     int length = data->readableBytes();
 
     if (length < 126) {
         onebyte |= length;
         output->append((char *)&onebyte, 1);
-    } else if (length == 126) {
-        onebyte |= length;
+    } else if (length >= 126 && length <= 65535) {
+        onebyte |= 126;
         output->append((char *)&onebyte, 1);
-
-        auto len = htons(length);
-        output->append((char *)&len, 2);
-    } else if (length == 127) {
-        onebyte |= length;
+        
+        uint16_t len16 = htons(length);
+        output->append((char *)&len16, 2);
+    } else if (length >= 65536) {
+        onebyte |= 127;
         output->append((char *)&onebyte, 1);
-
-        // also can use htonll if you have it
-        onebyte = (payload_length_ >> 56) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 48) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 40) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 32) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 24) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 16) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 8) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = payload_length_ & 0XFF;
-        output->append((char *)&onebyte, 1);
+        
+        uint64_t len64 = htobe64(length); // 64 位大端格式
+        output->append((char *)&len64, 8);
     }
 
     if (mask_ == 1) {
@@ -107,62 +94,5 @@ void WebSocketPacket::encodeFrame(Buffer *output, Buffer *data) const
         }
     } else {
         output->append(data->peek(), data->readableBytes());
-    }
-}
-
-void WebSocketPacket::addFrameHeader(Buffer *output)
-{
-    payload_length_ = output->readableBytes() - 14;
-
-    uint8_t onebyte = 0;
-    onebyte |= (fin_ << 7);
-    onebyte |= (rsv1_ << 6);
-    onebyte |= (rsv2_ << 5);
-    onebyte |= (rsv3_ << 4);
-    onebyte |= (opcode_ & 0x0F);
-
-    output->append((char *)&onebyte, 1);
-
-    onebyte = 0;
-    // set mask flag
-    onebyte = onebyte | (mask_ << 7);
-
-    int length = payload_length_;
-
-    if (length < 126)
-    {
-        onebyte |= length;
-        output->append((char *)&onebyte, 1);
-    }
-    else if (length == 126)
-    {
-        onebyte |= length;
-        output->append((char *)&onebyte, 1);
-
-        auto len = htons(length);
-        output->append((char *)&len, 2);
-    }
-    else if (length == 127)
-    {
-        onebyte |= length;
-        output->append((char *)&onebyte, 1);
-
-        // also can use htonll if you have it
-        onebyte = (payload_length_ >> 56) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 48) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 40) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 32) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 24) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 16) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = (payload_length_ >> 8) & 0xFF;
-        output->append((char *)&onebyte, 1);
-        onebyte = payload_length_ & 0XFF;
-        output->append((char *)&onebyte, 1);
     }
 }

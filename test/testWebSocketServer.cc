@@ -18,7 +18,7 @@ void sendMessage(const TcpConnectionPtr &conn)
 void onRequest(const Buffer *input, const TcpConnectionPtr &conn)
 {
     std::string cmd(input->peek(), input->readableBytes());
-
+    std::cout << cmd << std::endl;
     if (cmd == "start") {
         EventLoop *loop = conn->getLoop();
         sendTaskId = loop->runEvery(0.01, [conn]() { sendMessage(conn); });
