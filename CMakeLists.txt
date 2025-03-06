@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 project(inet)
 
 set (CMAKE_CXX_STANDARD 14)
-set (CMAKE_BUILD_TYPE Release)
+set (CMAKE_BUILD_TYPE Debug)
 
-option(BUILD_TESTS "Enable testing" OFF)
+option(BUILD_TESTS "Enable testing" ON)
 
 set (SOURCE_DIR  ${CMAKE_CURRENT_LIST_DIR}/src)
 set (INCLUDE_DIR  ${CMAKE_CURRENT_LIST_DIR}/inc)
@@ -14,6 +14,7 @@ file(GLOB_RECURSE SRC_FILES
 	"${SOURCE_DIR}/net/*.c*"
 	"${SOURCE_DIR}/log/*.c*"
 	"${SOURCE_DIR}/http/*.c*"
+	"${SOURCE_DIR}/websocket/*.c*"
 )
 
 file (GLOB_RECURSE INC_FILES
@@ -21,6 +22,7 @@ file (GLOB_RECURSE INC_FILES
 	"${INCLUDE_DIR}/net/*.h"
 	"${INCLUDE_DIR}/log/*.h"
 	"${INCLUDE_DIR}/http/*.h"
+	"${INCLUDE_DIR}/websocket/*.h"
 )
 
 include_directories(
@@ -28,6 +30,7 @@ include_directories(
 	"${INCLUDE_DIR}/net"
 	"${INCLUDE_DIR}/log"
 	"${INCLUDE_DIR}/http"
+	"${INCLUDE_DIR}/websocket"
 )
 
 add_library(${PROJECT_NAME}_static STATIC ${SRC_FILES})
@@ -47,6 +50,9 @@ target_link_libraries(testTcpClient ${PROJECT_NAME} pthread)
 
 add_executable(testHttpServer test/testHttpServer.cc)
 target_link_libraries(testHttpServer ${PROJECT_NAME} pthread)
+
+add_executable(testWebSocketServer test/testWebSocketServer.cc)
+target_link_libraries(testWebSocketServer ${PROJECT_NAME} pthread)
 endif()
 
 

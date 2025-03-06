@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+<body>
+    <h2>WebSocket 客户端</h2>
+    <button onclick="connect()">连接</button>
+    <input type="text" id="message" placeholder="输入消息">
+    <button onclick="sendMessage()">发送</button>
+    <button onclick="disconnect()">断开连接</button>
+    <div id="log"></div>
+
+    <script>
+        let socket;
+
+        function log(message) {
+            document.getElementById("log").innerHTML += message + "<br>";
+        }
+
+        function connect() {
+            socket = new WebSocket("ws://localhost:9000"); // 替换为你的 WebSocket 服务器地址
+
+            socket.onopen = () => log("已连接到 WebSocket 服务器");
+            socket.onmessage = event => log("收到消息: " + event.data);
+            socket.onclose = () => log("连接已关闭");
+            socket.onerror = error => log("发生错误: " + error);
+        }
+
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(message);
+                log("发送消息: " + message);
+            } else {
+                log("WebSocket 未连接");
+            }
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.close();
+            }
+        }
+    </script>
+</body>
+</html>

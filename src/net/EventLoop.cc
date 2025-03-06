@@ -126,11 +126,16 @@ int64_t EventLoop::runAfter(double delay_seconds, TimerCallback cb)
     return runAt(time, std::move(cb));
 }
 
-// 每个一个时间间隔就执行一次定时器
+// 每隔一个时间间隔就执行一次定时器
 int64_t EventLoop::runEvery(double interval_seconds, TimerCallback cb)
 {
     TimeStamp time(addTime(TimeStamp::now(), interval_seconds));
     return m_timerQueue->addTimer(std::move(cb), time, interval_seconds);
+}
+
+void EventLoop::cancel(int64_t timerId)
+{
+	m_timerQueue->cancel(timerId);
 }
 
 void EventLoop::doPendingFunctors()

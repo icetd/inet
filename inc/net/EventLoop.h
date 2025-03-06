@@ -46,6 +46,7 @@ namespace inet
         int64_t runAt(TimeStamp time, TimerCallback cb);
         int64_t runAfter(double delay_seconds, TimerCallback cb);
         int64_t runEvery(double interval_seconds, TimerCallback cb);
+        void cancel(int64_t timerId);
 
     private:
         pid_t m_threadId;

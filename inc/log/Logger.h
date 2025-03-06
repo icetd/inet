@@ -4,6 +4,9 @@
 #include "LogStream.h"
 #include "TimeStamp.h"
 
+void DefaultOutput(const char *msg, int len);
+void AsyncOutput(const char *logline, int len);
+
 namespace inet 
 {
     class Logger
