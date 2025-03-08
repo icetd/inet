@@ -28,9 +28,9 @@ namespace inet
     {
     public:
         WebSocketPacket()
-            : fin_(1) // 1±íÊ¾ÊÇÏûÏ¢µÄ×îºóÒ»¸ö·ÖÆ¬,±íÊ¾²»·Ö°ü
+            : fin_(1) // 1è¡¨ç¤ºæ˜¯æ¶ˆæ¯çš„æœ€åä¸€ä¸ªåˆ†ç‰‡,è¡¨ç¤ºä¸åˆ†åŒ…
               ,
-              rsv1_(0), rsv2_(0), rsv3_(0), opcode_(1) // Ä¬ÈÏÊÇ·¢ËÍÎÄ±¾Ö¡
+              rsv1_(0), rsv2_(0), rsv3_(0), opcode_(1) // é»˜è®¤æ˜¯å‘é€æ–‡æœ¬å¸§
               ,
               mask_(0), payload_length_(0)
         {
@@ -42,11 +42,11 @@ namespace inet
 
         void reset()
         {
-            fin_ = 1; // Ä¬ÈÏÊÇ1
+            fin_ = 1; // é»˜è®¤æ˜¯1
             rsv1_ = 0;
             rsv2_ = 0;
             rsv3_ = 0;
-            opcode_ = 1; // Ä¬ÈÏÊÇ·¢ËÍÎÄ±¾Ö¡
+            opcode_ = 1; // é»˜è®¤æ˜¯å‘é€æ–‡æœ¬å¸§
             mask_ = 0;
             memset(masking_key_, 0, sizeof(masking_key_));
 

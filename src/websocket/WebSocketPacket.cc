@@ -77,7 +77,7 @@ void WebSocketPacket::encodeFrame(Buffer *output, Buffer *data) const
         onebyte |= 127;
         output->append((char *)&onebyte, 1);
         
-        uint64_t len64 = htobe64(length); // 64 位大端格式
+        uint64_t len64 = htobe64(length);
         output->append((char *)&len64, 8);
     }
 
