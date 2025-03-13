@@ -27,7 +27,7 @@ TcpClient::~TcpClient()
 
     if (conn) {
         assert(m_loop == conn->getLoop());
-        m_loop->queueInLoop([conn](){ conn->connectDestroyed(); });
+        m_loop->queueInLoop([conn]() { conn->connectDestroyed(); });
         if (unique) {
             conn->forceClose();
         }
@@ -70,8 +70,7 @@ void TcpClient::newConnection(int sockfd)
     conn->setConnectionCallback(m_connectionCallback);
     conn->setMessageCallback(m_messageCallback);
     conn->setWriteCompleteCallback(m_writeCompleteCallback);
-    conn->setCloseCallback([this](const TcpConnectionPtr &connection)
-                           { removeConnection(connection); });
+    conn->setCloseCallback([this](const TcpConnectionPtr &connection) { removeConnection(connection); });
 
     {
         std::lock_guard<std::mutex> lock(m_mutex);
@@ -84,7 +83,6 @@ void TcpClient::removeConnection(const TcpConnectionPtr &conn)
 {
     m_loop->runInLoop([this, conn]() { removeConnectionInLoop(conn); });
 }
-
 
 void TcpClient::removeConnectionInLoop(const TcpConnectionPtr &conn)
 {

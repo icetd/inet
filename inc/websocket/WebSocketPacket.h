@@ -27,12 +27,16 @@ namespace inet
     class WebSocketPacket
     {
     public:
-        WebSocketPacket()
-            : fin_(1) // 1表示是消息的最后一个分片,表示不分包
-              ,
-              rsv1_(0), rsv2_(0), rsv3_(0), opcode_(1) // 默认是发送文本帧
-              ,
-              mask_(0), payload_length_(0)
+        WebSocketPacket() :
+            fin_(1) // 1表示是消息的最后一个分片,表示不分包
+            ,
+            rsv1_(0),
+            rsv2_(0),
+            rsv3_(0),
+            opcode_(1) // 默认是发送文本帧
+            ,
+            mask_(0),
+            payload_length_(0)
         {
             memset(masking_key_, 0, sizeof(masking_key_));
         }
@@ -86,5 +90,5 @@ namespace inet
         uint64_t payload_length_;
     };
 
-}
+} // namespace inet
 #endif

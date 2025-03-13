@@ -35,7 +35,6 @@ namespace inet
         void setMessageCallback(MessageCallback cb) { m_messageCallback = std::move(cb); }
         void setWriteCompleteCallback(WriteCompleteCallback cb) { m_writeCompleteCallback = std::move(cb); }
 
-
     private:
         EventLoop *m_loop;
 
@@ -55,5 +54,5 @@ namespace inet
         void removeConnection(const TcpConnectionPtr &conn);
         void removeConnectionInLoop(const TcpConnectionPtr &conn);
     };
-}
+} // namespace inet
 #endif

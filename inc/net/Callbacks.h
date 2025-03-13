@@ -10,11 +10,11 @@ namespace inet
     class TcpConnection;
 
     using TimerCallback = std::function<void()>;
-    
+
     using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
     using CloseCallback = std::function<void(const TcpConnectionPtr &)>;
     using WriteCompleteCallback = std::function<void(const TcpConnectionPtr &)>;
     using ConnectionCallback = std::function<void(const TcpConnectionPtr &)>;
     using MessageCallback = std::function<void(const TcpConnectionPtr &, Buffer *)>;
-}
+} // namespace inet
 #endif

@@ -17,7 +17,8 @@ namespace inet
     class TcpConnection : public std::enable_shared_from_this<TcpConnection>
     {
     public:
-        enum class StateE {
+        enum class StateE
+        {
             kDisconnected,
             kConnecting,
             kConnected,
@@ -115,7 +116,6 @@ namespace inet
         Buffer m_inputBuffer;
         Buffer m_outputBuffer;
     };
-}
+} // namespace inet
 
 #endif
-

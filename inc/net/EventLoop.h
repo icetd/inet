@@ -16,13 +16,13 @@
 #include "TimeStamp.h"
 
 namespace inet
-{   
+{
     class TimerQueue;
     class EventLoop
     {
     public:
         using Functor = std::function<void()>;
-        using channelList = std::vector<Channel*>;
+        using channelList = std::vector<Channel *>;
 
         EventLoop();
         ~EventLoop();
@@ -40,7 +40,7 @@ namespace inet
         pid_t getThreadId() const { return m_threadId; }
 
         void quit();
-        
+
         void assertInLoopThread();
 
         int64_t runAt(TimeStamp time, TimerCallback cb);
@@ -52,7 +52,7 @@ namespace inet
         pid_t m_threadId;
         std::atomic_bool m_quit;
         std::atomic_bool m_callingPendingFunctors;
-        
+
         std::unique_ptr<Epoll> m_ep;
         channelList m_activeChannels;
 
@@ -62,9 +62,9 @@ namespace inet
         std::vector<Functor> m_pendingFunctors;
         std::mutex m_mutex;
 
-        void doPendingFunctors();  //do task callback
-        void handleRead(); // for wake ip
-    };  
-}
+        void doPendingFunctors(); // do task callback
+        void handleRead();        // for wake ip
+    };
+} // namespace inet
 
 #endif

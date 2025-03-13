@@ -19,16 +19,16 @@ namespace inet
         using BufferVector = std::vector<std::unique_ptr<Buffer>>;
 
         AsyncLogger(const std::string fileName, off_t rollSize, int flushInterval = 3);
-        ~AsyncLogger() 
+        ~AsyncLogger()
         {
             if (m_is_running) {
                 stop();
             }
         }
 
-        void append(const char * logline, int len);
+        void append(const char *logline, int len);
 
-        void start() 
+        void start()
         {
             m_is_running = true;
             m_thread = std::thread([this]() { ThreadFunc(); });
@@ -52,11 +52,10 @@ namespace inet
 
         std::mutex m_mutex;
         std::condition_variable m_cond;
-        BufferPtr m_currentBuffer;  // current buffers
-        BufferPtr m_nextBuffer;     // next buffer point
-        BufferVector m_buffers;     // buffer vector for log thread
+        BufferPtr m_currentBuffer; // current buffers
+        BufferPtr m_nextBuffer;    // next buffer point
+        BufferVector m_buffers;    // buffer vector for log thread
     };
-}
-
+} // namespace inet
 
 #endif

@@ -9,13 +9,14 @@ namespace inet
     const int KSmallBuffer = 1024;
     const int KLargeBuffer = 1024 * 1000;
 
-    template<int SIZE>
+    template <int SIZE>
     class FixedBuffer
     {
     public:
-        FixedBuffer() : m_cur(m_data) {}
+        FixedBuffer() :
+            m_cur(m_data) {}
         ~FixedBuffer() {}
-        
+
         void append(const char *buf, size_t len)
         {
             if (available() > static_cast<int>(len)) {
@@ -31,10 +32,11 @@ namespace inet
         int length() const { return static_cast<int>(m_cur - m_data); }
         char *current() { return m_cur; }
         int available() const { return static_cast<int>(end() - m_cur); }
+
     private:
         char m_data[SIZE];
         char *m_cur;
-        
+
         const char *end() const { return m_data + sizeof(m_data); }
     };
 
@@ -43,7 +45,8 @@ namespace inet
     public:
         using Buffer = FixedBuffer<KSmallBuffer>;
 
-        LogStream & operator << (bool v) {
+        LogStream &operator<<(bool v)
+        {
             m_buffer.append(v ? "1" : "0", 1);
             return *this;
         }
@@ -62,13 +65,13 @@ namespace inet
         const Buffer &buffer() const { return m_buffer; }
 
     private:
-        template<class T>
+        template <class T>
         void FromatInteger(T);
 
         Buffer m_buffer;
 
         static const int KMaxNumbericSize = 48;
     };
-}
+} // namespace inet
 
 #endif

@@ -34,6 +34,6 @@ namespace inet
         WebSocketPacket m_requestPacket;
     };
 
-}
+} // namespace inet
 
 #endif

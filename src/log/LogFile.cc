@@ -20,7 +20,7 @@ LogFile::LogFile(const std::string &fileName, off_t rollSize, int flushInterval_
 void LogFile::append(const char *logline, int len)
 {
     m_file->append(logline, len);
-    if (m_file->writtenBytes() >m_rollsize) {
+    if (m_file->writtenBytes() > m_rollsize) {
         rollFile();
     } else {
         m_count++;
@@ -49,15 +49,14 @@ bool LogFile::rollFile()
         std::string filename = getLogFileName(m_basename, &now);
         m_last_roll = now;
         m_last_flush = now;
-        m_start_of_period = now / kRollPerSeconds * kRollPerSeconds; 
+        m_start_of_period = now / kRollPerSeconds * kRollPerSeconds;
         m_file.reset(new AppendFile(filename));
         return true;
     }
     return false;
 }
 
-
-std::string LogFile::getLogFileName(const std::string& basename, time_t* now)
+std::string LogFile::getLogFileName(const std::string &basename, time_t *now)
 {
     std::string filename;
     filename.reserve(basename.size() + 64);

@@ -7,12 +7,13 @@
 void DefaultOutput(const char *msg, int len);
 void AsyncOutput(const char *logline, int len);
 
-namespace inet 
+namespace inet
 {
     class Logger
     {
     public:
-        enum LogLevel {
+        enum LogLevel
+        {
             TRACE = 0,
             DEBUG,
             INFO,
@@ -33,16 +34,16 @@ namespace inet
         static LogLevel getGlobalLogLevel();
         static void setLogFileName(std::string filename) { m_log_file_basename = filename; }
         static std::string getLogFileName() { return m_log_file_basename; }
-        
-        using OutputFunc = void (*) (const char *msg, int len);
-        using FlushFunc = void (*) ();
+
+        using OutputFunc = void (*)(const char *msg, int len);
+        using FlushFunc = void (*)();
 
         static void setOutput(OutputFunc);
         static void setFlush(FlushFunc);
         static void setLogLevel(Logger::LogLevel level);
-        
+
     private:
-        class Impl 
+        class Impl
         {
         public:
             using LogLevel = Logger::LogLevel;
@@ -62,13 +63,13 @@ namespace inet
         static std::string m_log_file_basename;
     };
 
-#define LOG_TRACE                                            \
+#define LOG_TRACE                                               \
     if (Logger::getGlobalLogLevel() <= Logger::LogLevel::TRACE) \
     Logger(__FILE__, __LINE__, Logger::LogLevel::TRACE, __func__).stream()
-#define LOG_DEBUG                                            \
+#define LOG_DEBUG                                               \
     if (Logger::getGlobalLogLevel() <= Logger::LogLevel::DEBUG) \
     Logger(__FILE__, __LINE__, Logger::LogLevel::DEBUG, __func__).stream()
-#define LOG_INFO                                            \
+#define LOG_INFO                                               \
     if (Logger::getGlobalLogLevel() <= Logger::LogLevel::INFO) \
     Logger(__FILE__, __LINE__).stream()
 

@@ -6,7 +6,8 @@
 
 using namespace inet;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     int port = 0;
     int thread_num = 0;
     int log_level = 0;
@@ -32,7 +33,7 @@ int main(int argc, char* argv[]) {
     StaticWebServer server(&loop, port);
     server.setRootDirectory(root_path);
     server.start(thread_num);
-    
+
     std::cout << "Server start on: " << port << "\n"
               << "Server thread num: " << thread_num << "\n"
               << "Server root path: " << root_path << "\n"

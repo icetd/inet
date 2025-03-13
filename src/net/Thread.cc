@@ -3,7 +3,8 @@
 
 using namespace inet;
 
-Thread::Thread(ThreadFunc func) : m_started(false),
+Thread::Thread(ThreadFunc func) :
+    m_started(false),
     m_joined(false),
     m_func(std::move(func)),
     m_latch(1)

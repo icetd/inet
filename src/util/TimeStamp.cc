@@ -4,7 +4,7 @@
 using namespace inet;
 
 static_assert(sizeof(TimeStamp) == sizeof(int64_t),
-    "TimeStamp should be same as int64_t");
+              "TimeStamp should be same as int64_t");
 
 std::string TimeStamp::toString() const
 {

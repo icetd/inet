@@ -24,13 +24,13 @@ namespace inet
 
         std::unique_ptr<AppendFile> m_file;
 
-        time_t m_start_of_period;   // log start time
-        time_t m_last_roll; // last log roll time
-        time_t m_last_flush; // last flush log time    
+        time_t m_start_of_period; // log start time
+        time_t m_last_roll;       // last log roll time
+        time_t m_last_flush;      // last flush log time
 
-        const static int kRollPerSeconds = 60 * 60 * 24;  // one day seconds
+        const static int kRollPerSeconds = 60 * 60 * 24; // one day seconds
 
-        std::string getLogFileName(const std::string& basename, time_t* now);
+        std::string getLogFileName(const std::string &basename, time_t *now);
     };
 
 } // namespace inet

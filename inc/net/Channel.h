@@ -8,18 +8,18 @@
 #include "Platform.h"
 
 namespace inet
-{   
+{
     class EventLoop;
     class Channel
     {
     public:
         using EventCallback = std::function<void()>;
 
-        Channel(EventLoop* loop, int fd);
+        Channel(EventLoop *loop, int fd);
         ~Channel() = default;
 
         void setEvents(int events);
-        int getEevents() const; 
+        int getEevents() const;
         void setRevents(int events);
         int getRevents() const;
 
@@ -32,11 +32,35 @@ namespace inet
         void setCloseCallback(EventCallback cb) { m_closeCallback = std::move(cb); }
         void setErrorCallback(EventCallback cb) { m_errorCallback = std::move(cb); }
 
-	    void enableReading() { m_events |= (EPOLLIN | EPOLLPRI); update(); }	//注册可读事件
-	    void disableReading() { m_events &= ~(EPOLLIN | EPOLLPRI); update(); }	//注销可读事件
-	    void enableWriting() { m_events |= EPOLLOUT; update(); }			    //注册可写事件
-	    void disableWriting() { m_events &= ~EPOLLOUT; update(); }		        //注销可写事件
-	    void disableAll() { m_events = 0; update();}	//注销所有事件
+        void enableReading()
+        {
+            m_events |= (EPOLLIN | EPOLLPRI);
+            update();
+        } // 注册可读事件
+
+        void disableReading()
+        {
+            m_events &= ~(EPOLLIN | EPOLLPRI);
+            update();
+        } // 注销可读事件
+
+        void enableWriting()
+        {
+            m_events |= EPOLLOUT;
+            update();
+        } // 注册可写事件
+
+        void disableWriting()
+        {
+            m_events &= ~EPOLLOUT;
+            update();
+        } // 注销可写事件
+
+        void disableAll()
+        {
+            m_events = 0;
+            update();
+        } // 注销所有事件
 
         bool isNoneEvent() const { return m_events == 0; }
         bool isWrite() const { return m_events & EPOLLOUT; }
@@ -44,7 +68,7 @@ namespace inet
 
         void handleEvent();
         void remove();
-        void tie(const std::shared_ptr<void>&);
+        void tie(const std::shared_ptr<void> &);
 
         // for debug
         std::string reventsToString() const;
@@ -70,6 +94,6 @@ namespace inet
         void handleEventWithGurad();
         static std::string eventsToString(int fd, int ev);
     };
-}
+} // namespace inet
 
 #endif

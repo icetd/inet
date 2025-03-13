@@ -51,7 +51,6 @@ void Connector::startInLoop()
     if (m_connect) {
         connect();
     } else {
-        
     }
 }
 
@@ -144,7 +143,7 @@ void Connector::handleWrite()
 void Connector::handleError()
 {
     LOG_ERROR << "Connector::handleError";
-    if (m_state== States::kConnecting) {
+    if (m_state == States::kConnecting) {
         int sockfd = removeAndResetChannel();
         int err = sockets::getSocketError(sockfd);
         LOG_TRACE << "SO_ERROR = " << err << " " << strerror(err);

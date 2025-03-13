@@ -34,7 +34,7 @@ void Epoll::updateChannel(Channel *ch)
     ev.events = ch->getEevents();
 
     if (ch->isInEpoll()) {
-        if (ch->isNoneEvent()) {  //channel is already not listen event
+        if (ch->isNoneEvent()) { // channel is already not listen event
             destroy(ch);
         } else {
             int ret = epoll_ctl(m_epfd, EPOLL_CTL_MOD, fd, &ev);
@@ -61,13 +61,13 @@ void Epoll::destroy(Channel *ch)
     }
 }
 
-void Epoll::epollWait(std::vector<Channel*> &active, int timeout)
+void Epoll::epollWait(std::vector<Channel *> &active, int timeout)
 {
     int nfds = epoll_wait(m_epfd, m_events, kSize, timeout);
     if (nfds == -1)
         perror("epoll_wait");
     for (int i = 0; i < nfds; i++) {
-        Channel *ch = static_cast<Channel*> (m_events[i].data.ptr);
+        Channel *ch = static_cast<Channel *>(m_events[i].data.ptr);
         ch->setRevents(m_events[i].events); // set channel return event from epoll
         active.emplace_back(ch);
     }

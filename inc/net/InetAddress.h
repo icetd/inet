@@ -10,9 +10,9 @@ namespace inet
     {
     public:
         InetAddress();
-        InetAddress(unsigned short port, const char *ip=nullptr);
-        explicit InetAddress(const struct sockaddr_in &address)  
-            : m_addr(address) {}
+        InetAddress(unsigned short port, const char *ip = nullptr);
+        explicit InetAddress(const struct sockaddr_in &address) :
+            m_addr(address) {}
 
         const struct sockaddr_in *getSockAddr() const { return &m_addr; }
 
@@ -22,9 +22,9 @@ namespace inet
         unsigned short toPort() const;
 
     private:
-        struct sockaddr_in m_addr;       
+        struct sockaddr_in m_addr;
     };
 
-} // namspace net
+} // namespace inet
 
 #endif

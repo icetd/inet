@@ -70,13 +70,13 @@ void WebSocketPacket::encodeFrame(Buffer *output, Buffer *data) const
     } else if (length >= 126 && length <= 65535) {
         onebyte |= 126;
         output->append((char *)&onebyte, 1);
-        
+
         uint16_t len16 = htons(length);
         output->append((char *)&len16, 2);
     } else if (length >= 65536) {
         onebyte |= 127;
         output->append((char *)&onebyte, 1);
-        
+
         uint64_t len64 = htobe64(length);
         output->append((char *)&len64, 8);
     }
@@ -85,8 +85,7 @@ void WebSocketPacket::encodeFrame(Buffer *output, Buffer *data) const
         output->append((char *)masking_key_, 4); // save masking key
 
         char value = 0;
-        for (uint64_t i = 0; i < payload_length_; ++i)
-        {
+        for (uint64_t i = 0; i < payload_length_; ++i) {
             value = *(char *)(data->peek());
             data->retrieve(1);
             value = value ^ masking_key_[i % 4];

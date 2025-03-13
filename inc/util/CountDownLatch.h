@@ -22,6 +22,6 @@ namespace inet
         std::condition_variable m_cond;
         int m_count;
     };
-}
+} // namespace inet
 
 #endif

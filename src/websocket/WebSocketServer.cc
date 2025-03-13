@@ -9,7 +9,7 @@
 
 using namespace inet;
 
-WebSocketServer* WebSocketServer::instance_ = nullptr;
+WebSocketServer *WebSocketServer::instance_ = nullptr;
 
 void defaultWebsocketCallback(const Buffer *buf, Buffer *sendBuf)
 {
@@ -17,7 +17,7 @@ void defaultWebsocketCallback(const Buffer *buf, Buffer *sendBuf)
     sendBuf->append(buf->peek(), buf->readableBytes());
 }
 
-WebSocketServer::WebSocketServer(EventLoop *loop, const InetAddress &listenAddr) : 
+WebSocketServer::WebSocketServer(EventLoop *loop, const InetAddress &listenAddr) :
     server_(loop, listenAddr),
     clientCloseCallback_(nullptr),
     websocketCallback_(nullptr)
@@ -46,9 +46,8 @@ void WebSocketServer::onConnection(const TcpConnectionPtr &conn)
 
 void WebSocketServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
 {
-    WebSocketContext *context = reinterpret_cast<WebSocketContext*>(conn->getContext().get());
-    if (!context)
-    {
+    WebSocketContext *context = reinterpret_cast<WebSocketContext *>(conn->getContext().get());
+    if (!context) {
         printf("context kong...\n");
         LOG_ERROR << "context is bad\n";
         return;
@@ -64,11 +63,7 @@ void WebSocketServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
         if (http.gotAll()) {
             auto httpRequest = http.request();
 
-            if (httpRequest.getHeader("Upgrade") != "websocket" ||
-                (httpRequest.getHeader("Connection") != "keep-alive, Upgrade" && httpRequest.getHeader("Connection") != "Upgrade") ||
-                httpRequest.getHeader("Sec-WebSocket-Version") != "13")
-            {
-
+            if (httpRequest.getHeader("Upgrade") != "websocket" || (httpRequest.getHeader("Connection") != "keep-alive, Upgrade" && httpRequest.getHeader("Connection") != "Upgrade") || httpRequest.getHeader("Sec-WebSocket-Version") != "13") {
                 conn->send("HTTP/1.1 400 Bad Request\r\n\r\n");
                 conn->shutdown();
                 return; // is not wobsocket
@@ -77,7 +72,7 @@ void WebSocketServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
             Buffer handsharedbuf;
             context->handleShared(&handsharedbuf, http.request().getHeader("Sec-WebSocket-Key"));
             conn->send(&handsharedbuf);
-            context->setwebsocketHandshared(); 
+            context->setwebsocketHandshared();
             if (clientConnectCallback_)
                 clientConnectCallback_(conn);
         }
@@ -88,7 +83,7 @@ void WebSocketServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
 
 void WebSocketServer::onWriteComplete(const TcpConnectionPtr &conn)
 {
-    //std::cout << conn.use_count() << std::endl;
+    // std::cout << conn.use_count() << std::endl;
 }
 
 void WebSocketServer::handleData(const TcpConnectionPtr &conn, WebSocketContext *websocket, Buffer *buf)
@@ -114,9 +109,9 @@ void WebSocketServer::handleData(const TcpConnectionPtr &conn, WebSocketContext 
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Binary);
         break;
     case WSOpcodeType::WSOpcode_Close:
-        
+
         // add your process code here
-        if(clientCloseCallback_)
+        if (clientCloseCallback_)
             clientCloseCallback_(conn);
         respondPacket.set_opcode(WSOpcodeType::WSOpcode_Close);
         break;
@@ -151,9 +146,8 @@ void WebSocketServer::handleData(const TcpConnectionPtr &conn, WebSocketContext 
 
 void WebSocketServer::send(const char *data, size_t len, const WSCodeType type, const std::weak_ptr<TcpConnection> &conn)
 {
-    WebSocketContext *context = reinterpret_cast<WebSocketContext*>(conn.lock()->getContext().get());
-    if (!context)
-    {
+    WebSocketContext *context = reinterpret_cast<WebSocketContext *>(conn.lock()->getContext().get());
+    if (!context) {
         printf("context kong...\n");
         LOG_ERROR << "context is bad\n";
         return;

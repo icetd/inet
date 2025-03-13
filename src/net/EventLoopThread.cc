@@ -2,7 +2,7 @@
 
 using namespace inet;
 
-EventLoopThread::EventLoopThread() : 
+EventLoopThread::EventLoopThread() :
     m_loop(nullptr),
     m_thread([this]() { threadFunc(); })
 {

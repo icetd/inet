@@ -8,7 +8,6 @@
 
 #include "Thread.h"
 
-
 namespace inet
 {
     class ThreadPool

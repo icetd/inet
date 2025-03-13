@@ -17,10 +17,10 @@ namespace inet
 
         void start();
         void join();
-        bool started()  { return m_started; }
+        bool started() { return m_started; }
         pid_t tid() const { return m_tid; }
 
-        bool joinable()const { return m_thread.joinable(); }
+        bool joinable() const { return m_thread.joinable(); }
 
     private:
         bool m_started;
@@ -29,10 +29,9 @@ namespace inet
         std::thread m_thread;
         pid_t m_tid;
         ThreadFunc m_func;
-        
+
         CountDownLatch m_latch;
     };
-}
-
+} // namespace inet
 
 #endif

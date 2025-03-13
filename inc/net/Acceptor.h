@@ -17,7 +17,7 @@ namespace inet
         Acceptor(EventLoop *eventloop, const InetAddress &listenAddr);
         ~Acceptor();
 
-        void setNewconnectionCallback(const NewConnectionCallback &cb) {m_newConnectionCallback = cb; }
+        void setNewconnectionCallback(const NewConnectionCallback &cb) { m_newConnectionCallback = cb; }
 
         void listen();
 
@@ -32,4 +32,4 @@ namespace inet
         bool m_listen;
     };
 
-}
+} // namespace inet

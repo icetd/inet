@@ -3,7 +3,6 @@
 #include <iostream>
 #include <unistd.h>
 
-
 using namespace inet;
 
 int64_t sendTaskId = -1;
@@ -27,7 +26,6 @@ void onRequest(const Buffer *input, const TcpConnectionPtr &conn)
         loop->cancel(sendTaskId);
     }
 }
-
 
 int main()
 {

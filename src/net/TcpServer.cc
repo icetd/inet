@@ -1,6 +1,6 @@
-#include<string.h>
-#include<unistd.h>
-#include<fcntl.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #include "TcpServer.h"
 #include "Util.h"
@@ -15,7 +15,7 @@ TcpServer::TcpServer(EventLoop *eventloop, const InetAddress &listenAddr) :
     m_compute_threadpool(std::make_unique<ThreadPool>()),
     m_started(0)
 {
-    m_acceptor->setNewconnectionCallback([this](int sockfd, const InetAddress &peerAddr) { 
+    m_acceptor->setNewconnectionCallback([this](int sockfd, const InetAddress &peerAddr) {
         newConnection(sockfd, peerAddr);
     });
 }
@@ -51,8 +51,7 @@ void TcpServer::newConnection(int sockfd, const InetAddress &peerAddr)
     m_connections[sockfd] = conn;
 
     conn->setMessageCallback(m_messageCallback);
-    conn->setCloseCallback([this](const TcpConnectionPtr &connection) { 
-        removeConnection(connection); });
+    conn->setCloseCallback([this](const TcpConnectionPtr &connection) { removeConnection(connection); });
     conn->setConnectionCallback(m_connectionCallback);
     conn->setWriteCompleteCallback(m_writeCompleteCallback);
 

@@ -2,7 +2,7 @@
 
 using namespace inet;
 
-EventLoopThreadPool::EventLoopThreadPool(EventLoop *baseloop) : 
+EventLoopThreadPool::EventLoopThreadPool(EventLoop *baseloop) :
     m_baseLoop(baseloop),
     m_started(false),
     m_numThreads(0),

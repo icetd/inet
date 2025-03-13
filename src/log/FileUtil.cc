@@ -6,7 +6,7 @@ AppendFile::AppendFile(const std::string &fileNmae) :
     m_fp(fopen(fileNmae.c_str(), "ae")),
     m_writtenBytes(0)
 {
-    if(m_fp == nullptr) {
+    if (m_fp == nullptr) {
         LOG_ERROR << "log file open failed: error = " << errno << " reson = " << strerror(errno);
     } else {
         setbuffer(m_fp, m_buffer, sizeof(m_buffer));
@@ -15,7 +15,7 @@ AppendFile::AppendFile(const std::string &fileNmae) :
 
 AppendFile::~AppendFile()
 {
-    if (m_fp) 
+    if (m_fp)
         fclose(m_fp);
 }
 

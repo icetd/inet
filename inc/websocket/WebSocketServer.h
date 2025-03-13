@@ -14,14 +14,15 @@ namespace inet
     class WebSocketServer
     {
     public:
-        using WebsocketCallback = std::function<void(const Buffer*, const TcpConnectionPtr &conn)>;
+        using WebsocketCallback = std::function<void(const Buffer *, const TcpConnectionPtr &conn)>;
         using ClientCloseCallback = std::function<void(const TcpConnectionPtr &conn)>;
         using ClientConnectCallback = std::function<void(const TcpConnectionPtr &conn)>;
 
-        static WebSocketServer* getInstance() {
+        static WebSocketServer *getInstance()
+        {
             if (instance_)
                 return instance_;
-            else 
+            else
                 return nullptr;
         }
 
@@ -42,13 +43,13 @@ namespace inet
         void onWriteComplete(const TcpConnectionPtr &conn);
         void handleData(const TcpConnectionPtr &conn, WebSocketContext *websocket, Buffer *buf);
 
-        static WebSocketServer* instance_;
+        static WebSocketServer *instance_;
         TcpServer server_;
         WebsocketCallback websocketCallback_;
         ClientCloseCallback clientCloseCallback_;
         ClientConnectCallback clientConnectCallback_;
     };
 
-}
+} // namespace inet
 
 #endif

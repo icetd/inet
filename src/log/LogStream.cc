@@ -7,7 +7,7 @@
 using namespace inet;
 
 // 高效的整型数字转字符算法, by Matthew Wilson
-template<typename T>
+template <typename T>
 size_t convert(char buf[], T value)
 {
     static const char digits[] = "9876543210123456789";
@@ -19,7 +19,7 @@ size_t convert(char buf[], T value)
         int lsd = static_cast<int>(i % 10);
         i /= 10;
         *p++ = zero[lsd];
-    } while(i != 0);
+    } while (i != 0);
 
     if (value < 0) {
         *p++ = '-';

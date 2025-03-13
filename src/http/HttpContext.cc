@@ -15,7 +15,7 @@ bool HttpContext::parseRequest(Buffer *buf)
                 // 若是找到"\r\n",说明至少有一行数据，可以进行解析
                 // buf->peek()为数据开始部分
                 ok = processRequestLine(buf->peek(), crlf);
-                if (ok) { // 解析成功
+                if (ok) {                         // 解析成功
                     buf->retrieveUntil(crlf + 2); // buf->peek()向后移动2字节，到下一行
                     m_state = HttpRequestPaseState::kExpectHeaders;
                 } else {
@@ -25,7 +25,7 @@ bool HttpContext::parseRequest(Buffer *buf)
                 hasMore = false;
             }
         } else if (m_state == HttpRequestPaseState::kExpectHeaders) { // parse headers
-            const char *crlf = buf->findCRLF(); // 找到"\r\n"位置
+            const char *crlf = buf->findCRLF();                       // 找到"\r\n"位置
             if (crlf) {
                 const char *colon = std::find(buf->peek(), crlf, ':'); // 定位分隔符
                 if (colon != crlf) {
@@ -38,7 +38,7 @@ bool HttpContext::parseRequest(Buffer *buf)
                 hasMore = false;
             }
         } else if (m_state == HttpRequestPaseState::kExpectBody) { // parse body
-            if (buf->readableBytes()) { // 表明还有数据，那就是请求体
+            if (buf->readableBytes()) {                            // 表明还有数据，那就是请求体
                 m_request.setQuery(buf->peek(), buf->beginWirte());
             }
             m_state = HttpRequestPaseState::kGotAll;
@@ -49,7 +49,7 @@ bool HttpContext::parseRequest(Buffer *buf)
     return ok;
 }
 
-bool HttpContext::parseRequest(Buffer *buf, TimeStamp receiveTime)  // parse request buffer
+bool HttpContext::parseRequest(Buffer *buf, TimeStamp receiveTime) // parse request buffer
 {
     bool ok = true;
     bool hasMore = true;
@@ -73,7 +73,7 @@ bool HttpContext::parseRequest(Buffer *buf, TimeStamp receiveTime)  // parse req
                 hasMore = false;
             }
         } else if (m_state == HttpRequestPaseState::kExpectHeaders) { // parse headers
-            const char *crlf = buf->findCRLF(); // 找到"\r\n"位置
+            const char *crlf = buf->findCRLF();                       // 找到"\r\n"位置
             if (crlf) {
                 const char *colon = std::find(buf->peek(), crlf, ':'); // 定位分隔符
                 if (colon != crlf) {
@@ -86,7 +86,7 @@ bool HttpContext::parseRequest(Buffer *buf, TimeStamp receiveTime)  // parse req
                 hasMore = false;
             }
         } else if (m_state == HttpRequestPaseState::kExpectBody) { // parse body
-            if (buf->readableBytes()) { // 表明还有数据，那就是请求体
+            if (buf->readableBytes()) {                            // 表明还有数据，那就是请求体
                 m_request.setQuery(buf->peek(), buf->beginWirte());
             }
             m_state = HttpRequestPaseState::kGotAll;
@@ -109,7 +109,7 @@ bool HttpContext::processRequestLine(const char *begin, const char *end)
     // Method
     if (space != end && m_request.setMethod(start, space)) {
         start = space + 1;
-    // URL    
+        // URL
         space = std::find(start, end, ' '); // 寻找第二个空格 url
         if (space != end) {
             const char *question = std::find(start, space, '?');
@@ -119,7 +119,7 @@ bool HttpContext::processRequestLine(const char *begin, const char *end)
             } else {
                 m_request.setPath(start, space); // 只有path
             }
-    // VERSION
+            // VERSION
             start = space + 1;
             std::string version(start, end);
             if (version == "HTTP/1.0")

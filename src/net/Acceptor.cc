@@ -4,7 +4,7 @@
 
 using namespace inet;
 
-Acceptor::Acceptor(EventLoop *eventloop, const InetAddress &listenAddr) : 
+Acceptor::Acceptor(EventLoop *eventloop, const InetAddress &listenAddr) :
     m_loop(eventloop),
     m_acceptSocket(Socket()),
     m_acceptChannel(m_loop, m_acceptSocket.fd()),

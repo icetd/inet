@@ -2,7 +2,8 @@
 
 using namespace inet;
 
-ThreadPool::ThreadPool() : m_running(false)
+ThreadPool::ThreadPool() :
+    m_running(false)
 {
 }
 
@@ -19,9 +20,8 @@ void ThreadPool::start(int numThreads)
     m_threads.reserve(numThreads);
 
     for (int i = 0; i < numThreads; i++) {
-        m_threads.emplace_back(std::make_unique<Thread>([this]() { 
-            runInThread(); }));
-        
+        m_threads.emplace_back(std::make_unique<Thread>([this]() { runInThread(); }));
+
         m_threads[i]->start();
     }
 }
@@ -43,7 +43,7 @@ void ThreadPool::add(Task task)
 {
     if (m_threads.empty()) { // 若没有线程，就直接执行任务
         task();
-    } else { 
+    } else {
         {
             std::unique_lock<std::mutex> lock(m_mutex);
             if (!m_running)
@@ -60,8 +60,8 @@ void ThreadPool::runInThread()
         Task task;
         {
             std::unique_lock<std::mutex> lock(m_mutex);
-            m_cond.wait(lock, [this]() { 
-                return !m_running || !m_tasks.empty(); 
+            m_cond.wait(lock, [this]() {
+                return !m_running || !m_tasks.empty();
             });
 
             if (!m_tasks.empty()) {

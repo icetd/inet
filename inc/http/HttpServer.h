@@ -13,7 +13,7 @@ namespace inet
     class HttpServer
     {
     public:
-        using HttpCallback = std::function<void(const HttpRequest&, HttpResponse*)>;
+        using HttpCallback = std::function<void(const HttpRequest &, HttpResponse *)>;
         HttpServer(EventLoop *loop, const InetAddress listenAddr);
         EventLoop *getLoop() const { return m_tcp_server.getLoop(); }
         void setHttpCallback(const HttpCallback &cb) { m_httpCallback = cb; }
@@ -28,7 +28,6 @@ namespace inet
         void onMessage(const TcpConnectionPtr &conn, Buffer *buf);
         void onRequest(const TcpConnectionPtr &conn, const HttpRequest &req);
     };
-}
-
+} // namespace inet
 
 #endif

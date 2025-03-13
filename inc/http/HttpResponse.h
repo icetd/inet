@@ -7,10 +7,10 @@
 
 namespace inet
 {
-    class HttpResponse 
+    class HttpResponse
     {
     public:
-        enum class HttpStatusCode 
+        enum class HttpStatusCode
         {
             kUnknown = 0,
             k200OK = 200,
@@ -29,10 +29,13 @@ namespace inet
         void setCloseConnection(bool on) { m_closeConnection = on; }
         bool closeConnection() const { return m_closeConnection; }
 
-        void setContentType(const std::string &contentType) { 
+        void setContentType(const std::string &contentType)
+        {
             addHeader("Content-Type", contentType);
         }
-        void addHeader(const std::string &key, const std::string &value) {
+
+        void addHeader(const std::string &key, const std::string &value)
+        {
             m_headers[key] = value;
         }
 
@@ -43,7 +46,7 @@ namespace inet
         void appendToBuffer(Buffer *output) const;
 
         void printHeadersWithoutBody() const;
-    
+
     private:
         std::unordered_map<std::string, std::string> m_headers;
         HttpStatusCode m_statusCode;
@@ -51,5 +54,5 @@ namespace inet
         bool m_closeConnection;
         std::string m_body;
     };
-}
+} // namespace inet
 #endif

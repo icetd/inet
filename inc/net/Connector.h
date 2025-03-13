@@ -10,15 +10,15 @@ namespace inet
 {
     class Connector
     {
-    public: 
-        using NewConnectionCallback = std::function<void (int sockfd)>;
+    public:
+        using NewConnectionCallback = std::function<void(int sockfd)>;
 
         enum class States
         {
-            kDisconnected, 
-            kConnecting, 
+            kDisconnected,
+            kConnecting,
             kConnected
-        };   
+        };
 
         Connector(EventLoop *loop, const InetAddress &serverAddr);
         ~Connector();
@@ -37,7 +37,6 @@ namespace inet
         bool m_connect;
         NewConnectionCallback m_newConnectionCallback;
 
-
         int m_retryDelayMs;
         static const int kMaxRetryDelayMs = 30 * 1000;
         static const int kInitRetryDelayMs = 500;
@@ -53,6 +52,6 @@ namespace inet
         int removeAndResetChannel();
         void resetChannel();
     };
-}
+} // namespace inet
 
 #endif

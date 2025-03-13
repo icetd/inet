@@ -6,7 +6,7 @@
 #include "TimeStamp.h"
 
 namespace inet
-{   
+{
     class HttpRequest
     {
     public:
@@ -28,14 +28,15 @@ namespace inet
         };
 
         HttpRequest() :
-            m_method(Method::kInvalid) ,
+            m_method(Method::kInvalid),
             m_version(Version::kUnknown)
         {}
 
-        void setVersion (Version v) { m_version = v; }
+        void setVersion(Version v) { m_version = v; }
         Version getVersion() const { return m_version; }
 
-        bool setMethod(const char *start, const char *end) {
+        bool setMethod(const char *start, const char *end)
+        {
             std::string m(start, end);
             if (m == "GET") {
                 m_method = Method::kGet;
@@ -52,11 +53,12 @@ namespace inet
             return m_method != Method::kInvalid;
         }
 
-        Method getMethod () const { return m_method; }
+        Method getMethod() const { return m_method; }
 
-        const char * methodString() const {
+        const char *methodString() const
+        {
             const char *result = "UNKNOWN";
-            
+
             switch (m_method) {
             case Method::kGet:
                 result = "GET";
@@ -65,7 +67,7 @@ namespace inet
             case Method::kPost:
                 result = "POST";
                 break;
-            
+
             case Method::kHead:
                 result = "HEAD";
                 break;
@@ -77,19 +79,21 @@ namespace inet
             case Method::kDelete:
                 result = "DELETE";
                 break;
-            
+
             default:
                 break;
             }
             return result;
         }
 
-        void setPath(const char *start, const char *end) {
+        void setPath(const char *start, const char *end)
+        {
             m_path.assign(start, end);
         }
-        const std::string getPath() const { return m_path;}
+        const std::string getPath() const { return m_path; }
 
-        void setQuery(const char *start, const char *end) {
+        void setQuery(const char *start, const char *end)
+        {
             m_query.assign(start, end);
         }
         const std::string getQuery() const { return m_query; }
@@ -106,13 +110,14 @@ namespace inet
             while (colon < end && std::isspace(*colon))
                 ++colon;
             std::string value(colon, end);
-            while(!value.empty() && std::isspace(value[value.size() -1]))
+            while (!value.empty() && std::isspace(value[value.size() - 1]))
                 value.resize(value.size() - 1);
 
             m_headers[filed] = value;
         }
 
-        std::string getHeader(const std::string &filed) const {
+        std::string getHeader(const std::string &filed) const
+        {
             std::string result;
             auto it = m_headers.find(filed);
             if (it != m_headers.end()) {
@@ -121,7 +126,7 @@ namespace inet
             return result;
         }
 
-        void swap (HttpRequest &that)
+        void swap(HttpRequest &that)
         {
             std::swap(m_method, that.m_method);
             std::swap(m_version, that.m_version);
@@ -131,18 +136,18 @@ namespace inet
         }
 
         const std::unordered_map<std::string, std::string> &getHeaders() const { return m_headers; }
-        
+
     private:
         Method m_method;
         Version m_version;
-        std::string m_path;  // request URL
-        
+        std::string m_path; // request URL
+
         std::string m_query; // Body
 
         TimeStamp m_receiveTime;
         std::unordered_map<std::string, std::string> m_headers;
     };
 
-}
+} // namespace inet
 
 #endif

@@ -4,7 +4,7 @@
 
 using namespace inet;
 
-AsyncLogger::AsyncLogger(const std::string fileName, off_t rollSize, int flushInterval) : 
+AsyncLogger::AsyncLogger(const std::string fileName, off_t rollSize, int flushInterval) :
     m_flushInterval(flushInterval),
     m_is_running(false),
     m_basename(fileName),
@@ -51,8 +51,7 @@ void AsyncLogger::ThreadFunc()
     BufferVector buffersToWrite;
     buffersToWrite.reserve(16);
 
-    while (m_is_running)
-    {
+    while (m_is_running) {
         {
             std::unique_lock<std::mutex> lock(m_mutex);
             if (m_buffers.empty()) {

@@ -12,14 +12,12 @@ void defaultHttpCallback(const HttpRequest &req, HttpResponse *resp)
     resp->setCloseConnection(true);
 }
 
-HttpServer::HttpServer(EventLoop *loop, const InetAddress listenAddr) : 
+HttpServer::HttpServer(EventLoop *loop, const InetAddress listenAddr) :
     m_tcp_server(loop, listenAddr),
-    m_httpCallback([] (const HttpRequest &req, HttpResponse *resp) { defaultHttpCallback(req, resp); })
+    m_httpCallback([](const HttpRequest &req, HttpResponse *resp) { defaultHttpCallback(req, resp); })
 {
-    m_tcp_server.setConnectionCallback([this](const TcpConnectionPtr &conn) { 
-                onConnection(conn); });
-    m_tcp_server.setMessageCallback([this](const TcpConnectionPtr &conn, Buffer *buf) { 
-                onMessage(conn, buf); });
+    m_tcp_server.setConnectionCallback([this](const TcpConnectionPtr &conn) { onConnection(conn); });
+    m_tcp_server.setMessageCallback([this](const TcpConnectionPtr &conn, Buffer *buf) { onMessage(conn, buf); });
 }
 
 void HttpServer::start(int numThreads)
@@ -29,7 +27,7 @@ void HttpServer::start(int numThreads)
 
 void HttpServer::onConnection(const TcpConnectionPtr &conn)
 {
-    if(conn->connected()) {
+    if (conn->connected()) {
         conn->setContext(std::make_shared<HttpContext>());
     }
 }
@@ -57,11 +55,10 @@ void HttpServer::onMessage(const TcpConnectionPtr &conn, Buffer *buf)
 void HttpServer::onRequest(const TcpConnectionPtr &conn, const HttpRequest &req)
 {
     const std::string &connection = req.getHeader("Connection");
-    bool close = (connection == "close") || 
-                 (req.getVersion() == HttpRequest::Version::kHttp10 && connection != "Keep-Alive"); 
+    bool close = (connection == "close") || (req.getVersion() == HttpRequest::Version::kHttp10 && connection != "Keep-Alive");
 
     HttpResponse response(close);
-    
+
     m_httpCallback(req, &response);
     Buffer buf;
     response.appendToBuffer(&buf);

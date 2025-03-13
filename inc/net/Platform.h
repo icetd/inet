@@ -23,7 +23,6 @@ typedef int SOCKET;
 #include <errno.h>
 #include <dirent.h>
 
-
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <sys/time.h>

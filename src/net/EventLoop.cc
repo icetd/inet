@@ -25,7 +25,7 @@ public:
 
 IgnoreSigPipe initObj;
 
-EventLoop::EventLoop() : 
+EventLoop::EventLoop() :
     m_threadId(CurrentThread::tid()),
     m_quit(false),
     m_callingPendingFunctors(false),
@@ -135,7 +135,7 @@ int64_t EventLoop::runEvery(double interval_seconds, TimerCallback cb)
 
 void EventLoop::cancel(int64_t timerId)
 {
-	m_timerQueue->cancel(timerId);
+    m_timerQueue->cancel(timerId);
 }
 
 void EventLoop::doPendingFunctors()

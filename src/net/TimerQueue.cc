@@ -48,7 +48,7 @@ void readTimerfd(int timerfd, TimeStamp now)
     }
 }
 
-TimerQueue::TimerQueue(EventLoop *loop) : 
+TimerQueue::TimerQueue(EventLoop *loop) :
     m_loop(loop),
     m_timerfd(createTimerfd()),
     m_timerfd_channel(loop, m_timerfd)
@@ -138,8 +138,7 @@ void TimerQueue::reset(const std::vector<TimerQueue::Entry> &expired, TimeStamp 
 {
     for (const auto &it : expired) {
         // 该定时器是重复的 && 没有在m_cancelingTimers容器中找到该定时器， 就再插入到容器中
-        if (it.second->repeat() && 
-            m_cancelingTimers.find(it.second->sequence()) == m_cancelingTimers.end()) {
+        if (it.second->repeat() && m_cancelingTimers.find(it.second->sequence()) == m_cancelingTimers.end()) {
             it.second->restart(now);
             insert(it.second);
         } else {
@@ -149,7 +148,7 @@ void TimerQueue::reset(const std::vector<TimerQueue::Entry> &expired, TimeStamp 
 
     if (!m_timers.empty()) {
         TimeStamp nextExpire = m_timers.begin()->second->expiration(); // 获取最早的超时时间
-        if (nextExpire.valid()) { // 若时间是有效的，就以该时间进行重置最早的超时时间
+        if (nextExpire.valid()) {                                      // 若时间是有效的，就以该时间进行重置最早的超时时间
             resetTimerfd(m_timerfd, nextExpire);
         }
     }

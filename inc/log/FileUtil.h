@@ -22,6 +22,6 @@ namespace inet
         char m_buffer[1024 * 64];
         off_t m_writtenBytes;
     };
-} //namespace inet
+} // namespace inet
 
 #endif

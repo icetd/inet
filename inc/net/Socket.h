@@ -5,13 +5,14 @@
 #include "Platform.h"
 #include "InetAddress.h"
 
-namespace inet 
+namespace inet
 {
     class Socket
     {
     public:
         Socket();
-        explicit Socket(int sockfd) : m_sockfd(sockfd) {}
+        explicit Socket(int sockfd) :
+            m_sockfd(sockfd) {}
         ~Socket();
 
         void bind(const InetAddress &localaddr);
@@ -24,6 +25,6 @@ namespace inet
     private:
         int m_sockfd;
     };
-} // namespace net
+} // namespace inet
 
 #endif

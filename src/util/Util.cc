@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "Logger.h"
 
-namespace inet 
+namespace inet
 {
     void sockets::setReuseAddr(int sockfd)
     {
@@ -46,9 +46,9 @@ namespace inet
         return sockfd;
     }
 
-    int sockets::connect(int sockfd, const struct sockaddr_in* addr)
+    int sockets::connect(int sockfd, const struct sockaddr_in *addr)
     {
-        return ::connect(sockfd, (sockaddr*)addr, static_cast<socklen_t>(sizeof(sockaddr)));
+        return ::connect(sockfd, (sockaddr *)addr, static_cast<socklen_t>(sizeof(sockaddr)));
     }
 
     bool sockets::isSelfConnect(int sockfd)
@@ -64,7 +64,7 @@ namespace inet
     {
         if (::close(sockfd) < 0) {
             LOG_SYSERR << "sockets::shutdownWrite";
-        }   
+        }
     }
 
     struct sockaddr_in sockets::getLocalAddr(int sockfd)
@@ -106,4 +106,4 @@ namespace inet
     {
         return ::getpid();
     }
-}
+} // namespace inet

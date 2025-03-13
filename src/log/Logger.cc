@@ -70,9 +70,9 @@ Logger::FlushFunc g_flush = DefaultFlush;
 class T
 {
 public:
-    T(const char *str, unsigned len)
-        : str_(str),
-          len_(len)
+    T(const char *str, unsigned len) :
+        str_(str),
+        len_(len)
     {
     }
 
@@ -88,26 +88,30 @@ inline LogStream &operator<<(LogStream &s, T v)
 
 // 日志等级字符串数组，用于输出的
 const char *g_loglevel_name[static_cast<int>(Logger::LogLevel::NUM_LOG_LEVELS)] = {
-        "TRACE ",
-        "DEBUG ",
-        "INFO  ",
-        "WARN  ",
-        "ERROR ",
-        "FATAL "};
+    "TRACE ",
+    "DEBUG ",
+    "INFO  ",
+    "WARN  ",
+    "ERROR ",
+    "FATAL "};
 
 // 多个级别，输出就有对应的输出。
-Logger::Logger(const char *FileName, int line, LogLevel level, const char *funcName) : m_impl(level, FileName, line)
+Logger::Logger(const char *FileName, int line, LogLevel level, const char *funcName) :
+    m_impl(level, FileName, line)
 {
     m_impl.m_stream << funcName << ' ';
 }
 
-Logger::Logger(const char *file, int line) : m_impl(LogLevel::INFO, file, line)
+Logger::Logger(const char *file, int line) :
+    m_impl(LogLevel::INFO, file, line)
 {
 }
-Logger::Logger(const char *file, int line, LogLevel level) : m_impl(level, file, line)
+Logger::Logger(const char *file, int line, LogLevel level) :
+    m_impl(level, file, line)
 {
 }
-Logger::Logger(const char *file, int line, bool toAbort) : m_impl(toAbort ? LogLevel::FATAL : LogLevel::ERROR, file, line)
+Logger::Logger(const char *file, int line, bool toAbort) :
+    m_impl(toAbort ? LogLevel::FATAL : LogLevel::ERROR, file, line)
 {
 }
 
@@ -118,7 +122,7 @@ Logger::~Logger()
     g_output(buf.data(), buf.length());
 }
 
-Logger::Impl::Impl(LogLevel level, const std::string &file, int line) : 
+Logger::Impl::Impl(LogLevel level, const std::string &file, int line) :
     m_time(TimeStamp::now()),
     m_stream(),
     m_level(level),

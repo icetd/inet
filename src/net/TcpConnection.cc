@@ -7,7 +7,7 @@
 
 using namespace inet;
 
-TcpConnection::TcpConnection(EventLoop *loop, int sockfd, const InetAddress &loaclAddr, const InetAddress &peerAddr) : 
+TcpConnection::TcpConnection(EventLoop *loop, int sockfd, const InetAddress &loaclAddr, const InetAddress &peerAddr) :
     m_loop(loop),
     m_state(StateE::kConnecting),
     m_socket(std::make_unique<Socket>(sockfd)),
@@ -24,7 +24,7 @@ TcpConnection::TcpConnection(EventLoop *loop, int sockfd, const InetAddress &loa
 TcpConnection::~TcpConnection()
 {
     LOG_DEBUG << "TcpConnection::dtor at  fd= " << m_channel->getFd() << " state= " << static_cast<int>(m_state);
-} 
+}
 
 void TcpConnection::send(Buffer *message)
 {
@@ -34,13 +34,11 @@ void TcpConnection::send(Buffer *message)
 
 void TcpConnection::send(const char *message, size_t len)
 {
-    if (m_state == StateE::kConnected)
-    {
+    if (m_state == StateE::kConnected) {
         if (m_loop->isInLoopThread()) {
             sendInLoop(message, len);
         } else {
-            m_loop->runInLoop([this, message, len]() { 
-                sendInLoop(message, len); });
+            m_loop->runInLoop([this, message, len]() { sendInLoop(message, len); });
         }
     }
 }
@@ -54,8 +52,7 @@ void TcpConnection::shutdown()
 {
     if (m_state == StateE::kConnected) {
         setState(StateE::kDisconnecting);
-        m_loop->runInLoop([this]() { 
-            shutdownInLoop(); });
+        m_loop->runInLoop([this]() { shutdownInLoop(); });
     }
 }
 void TcpConnection::shutdownInLoop()
@@ -76,7 +73,7 @@ void TcpConnection::forceClose()
 void TcpConnection::forceCloseInLoop()
 {
     m_loop->assertInLoopThread();
-    if (m_state == StateE::kConnected || m_state == StateE::kDisconnecting){
+    if (m_state == StateE::kConnected || m_state == StateE::kDisconnecting) {
         setState(StateE::kDisconnecting);
         handleClose();
     }

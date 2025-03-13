@@ -28,11 +28,11 @@ namespace inet
     private:
         const TimerCallback m_callback;
         TimeStamp m_expiration;
-        const double m_interval;  //重复定时器执行事件的间隔时间，若是一次性定时器，该值为 0.0
-        const bool m_repeat;      //用于判断定时器是否是重复循环的
-        const int64_t m_sequence; //用来辨别定时器的唯一标识
+        const double m_interval;  // 重复定时器执行事件的间隔时间，若是一次性定时器，该值为 0.0
+        const bool m_repeat;      // 用于判断定时器是否是重复循环的
+        const int64_t m_sequence; // 用来辨别定时器的唯一标识
         static std::atomic_int64_t m_num_created;
     };
-}
+} // namespace inet
 
 #endif

@@ -21,8 +21,8 @@ namespace inet
     public:
         static const size_t KCheapPrepend = 8;   // 数据包长度8字节
         static const size_t KInitailSize = 1024; // 缓冲区初始的大小
-        explicit Buffer(size_t initialSize = KInitailSize)
-            : buffer_(KCheapPrepend + initialSize), readerIndex_(KCheapPrepend), writerIndex_(KCheapPrepend)
+        explicit Buffer(size_t initialSize = KInitailSize) :
+            buffer_(KCheapPrepend + initialSize), readerIndex_(KCheapPrepend), writerIndex_(KCheapPrepend)
         {
         }
 
@@ -162,6 +162,6 @@ namespace inet
 
         static const char kCRLF[];
     };
-}
+} // namespace inet
 
 #endif

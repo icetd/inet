@@ -18,7 +18,7 @@ namespace inet
         ~TcpServer();
 
         void start(int IOThreadNum = 0, int threadNum = 0);
-        
+
         void setMessageCallback(const MessageCallback &cb)
         {
             m_messageCallback = cb;
@@ -35,7 +35,7 @@ namespace inet
         }
 
         EventLoop *getLoop() const { return m_loop; }
-    
+
     private:
         EventLoop *m_loop;
 
@@ -51,11 +51,11 @@ namespace inet
         WriteCompleteCallback m_writeCompleteCallback;
         MessageCallback m_messageCallback;
         ConnectionCallback m_connectionCallback;
- 
+
         void newConnection(int sockfd, const InetAddress &peerAddr);
         void removeConnection(const TcpConnectionPtr &conn);
         void removeConnectionInLoop(const TcpConnectionPtr &conn);
     };
-}
+} // namespace inet
 
 #endif

@@ -26,6 +26,6 @@ namespace inet
         std::vector<std::unique_ptr<EventLoopThread>> m_threads; // IO线程列表
         std::vector<EventLoop *> m_loops;                        // EventLoop列表, 指向的是EventLoopThread线程函数创建的EventLoop对象
     };
-}
+} // namespace inet
 
 #endif

@@ -14,7 +14,7 @@ namespace inet
         int getSocketError(int sockfd);
 
         int createNonblockingOrDie();
-        int connect(int sockfd, const struct sockaddr_in* addr);
+        int connect(int sockfd, const struct sockaddr_in *addr);
 
         bool isSelfConnect(int sockfd);
         void close(int sockfd);
@@ -27,8 +27,8 @@ namespace inet
     {
         std::string hostname();
         pid_t pid();
-    }
+    } // namespace ProcessInfo
     void perror_if(bool condtion, const char *errorMessage);
-}
+} // namespace inet
 
 #endif

@@ -12,8 +12,8 @@
 #include "EventLoop.h"
 #include "Callbacks.h"
 
-namespace inet 
-{   
+namespace inet
+{
     class TimerQueue
     {
     public:
@@ -22,7 +22,7 @@ namespace inet
 
         int64_t addTimer(TimerCallback cb, TimeStamp when, double interval);
         void cancel(int64_t timerId);
-    
+
     private:
         using Entry = std::pair<TimeStamp, Timer *>;
         using TimerList = std::set<Entry>;
@@ -39,10 +39,10 @@ namespace inet
         const int m_timerfd;
         Channel m_timerfd_channel;
         TimerList m_timers;
-        std::unordered_map<int64_t, Timer*> m_activeTimers;
-        std::unordered_map<int64_t, Timer*> m_cancelingTimers;
+        std::unordered_map<int64_t, Timer *> m_activeTimers;
+        std::unordered_map<int64_t, Timer *> m_cancelingTimers;
         std::atomic_bool m_callingExpiredTimers;
     };
-} // end namespace
+} // namespace inet
 
 #endif

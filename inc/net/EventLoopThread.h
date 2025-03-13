@@ -9,11 +9,11 @@ namespace inet
     class EventLoopThread
     {
     public:
-        using ThreadInitCallback = std::function<void(EventLoop*)>;
+        using ThreadInitCallback = std::function<void(EventLoop *)>;
         EventLoopThread();
         ~EventLoopThread();
         EventLoop *statloop();
-    
+
     private:
         EventLoop *m_loop;
         Thread m_thread;
@@ -22,6 +22,6 @@ namespace inet
 
         void threadFunc();
     };
-} // end namespace
+} // namespace inet
 
 #endif

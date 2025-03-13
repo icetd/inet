@@ -4,7 +4,7 @@
 
 using namespace inet;
 
-Channel::Channel(EventLoop *loop, int fd) : 
+Channel::Channel(EventLoop *loop, int fd) :
     m_loop(loop),
     m_fd(fd),
     m_events(0),
@@ -78,7 +78,7 @@ void Channel::update()
 
 void Channel::handleEventWithGurad()
 {
-     LOG_INFO << reventsToString();
+    LOG_INFO << reventsToString();
 
     if ((m_revents & EPOLLHUP) && !(m_revents & EPOLLIN)) { // hup and no read
         if (m_closeCallback) {
@@ -88,15 +88,13 @@ void Channel::handleEventWithGurad()
     }
 
     if (m_revents & EPOLLERR) { // error event
-        if (m_errorCallback)
-        {
+        if (m_errorCallback) {
             m_errorCallback();
         }
     }
 
     if (m_revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP)) { // read event
-        if (m_readCallback)
-        {
+        if (m_readCallback) {
             m_readCallback();
         }
     }

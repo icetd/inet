@@ -2,9 +2,9 @@
 
 using namespace inet;
 
-CountDownLatch::CountDownLatch(int count) : 
-    m_mutex(), 
-    m_cond(), 
+CountDownLatch::CountDownLatch(int count) :
+    m_mutex(),
+    m_cond(),
     m_count(count)
 {
 }
