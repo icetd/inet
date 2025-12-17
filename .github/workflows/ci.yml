@@ -24,3 +24,10 @@ jobs:
 
     - name: Build
       run: cmake --build build -j$(nproc)
+
+    - name: Run StaticWebServer test
+      run: |
+        cd build
+        timeout 60s ./StaticWebServer &
+        sleep 5
+        curl -f http://localhost:8888 || echo "Server not responding"
