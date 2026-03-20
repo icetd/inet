@@ -35,6 +35,8 @@ private:
     std::string urlDecode(const std::string &url);
     std::string getFileOrIndex(const std::string &path);
 
+    const size_t MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    bool isFileTooLarge(const std::string &filePath, size_t maxSize);
     // 处理 HTTP 请求
     void onRequest(const HttpRequest &req, HttpResponse *resp);
 };

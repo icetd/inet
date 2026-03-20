@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits.h>
+#include <unistd.h>
 #include "Logger.h"
 
 using namespace inet;
@@ -106,12 +108,40 @@ std::string StaticWebServer::urlDecode(const std::string &url)
 std::string StaticWebServer::getFileOrIndex(const std::string &path)
 {
     std::string filePath = m_rootDirectory + path;
-    // 使用 stat 函数检查路径是否为目录
-    struct stat statbuf;
-    if (stat(filePath.c_str(), &statbuf) == 0 && S_ISDIR(statbuf.st_mode)) {
-        filePath += "/index.html"; // 如果是目录，则添加 index.html
+
+    char realPath[PATH_MAX];
+    char realRoot[PATH_MAX];
+
+    if (!realpath(filePath.c_str(), realPath) ||
+        !realpath(m_rootDirectory.c_str(), realRoot)) {
+        return ""; // 非法路径
     }
-    return filePath;
+
+    if (strncmp(realPath, realRoot, strlen(realRoot)) != 0) {
+        return ""; // 拒绝访问
+    }
+
+    struct stat statbuf;
+    if (stat(realPath, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)) {
+        std::string indexPath = std::string(realPath) + "/index.html";
+        return indexPath;
+    }
+
+    return realPath;
+}
+
+bool StaticWebServer::isFileTooLarge(const std::string &filePath, size_t maxSize)
+{
+    struct stat st;
+    if (stat(filePath.c_str(), &st) != 0) {
+        return false; // 文件不存在，不算大文件
+    }
+
+    if (!S_ISREG(st.st_mode)) {
+        return false; // 不是普通文件（目录等）
+    }
+
+    return st.st_size > maxSize;
 }
 
 void StaticWebServer::onRequest(const HttpRequest &req, HttpResponse *resp)
@@ -132,6 +162,14 @@ void StaticWebServer::onRequest(const HttpRequest &req, HttpResponse *resp)
     path = urlDecode(path); // 解码 URL
 
     std::string filePath = getFileOrIndex(path); // 获取文件路径，若为目录则尝试加载 index.html
+
+    if (isFileTooLarge(filePath, MAX_FILE_SIZE)) {
+        resp->setStatusCode(HttpResponse::HttpStatusCode::k403Forbidden);
+        resp->setStatusMessage("Forbidden");
+        resp->setBody("File too large");
+        return;
+    }
+
     std::string fileContent = readFile(filePath);
 
     if (!fileContent.empty()) {
