@@ -66,7 +66,11 @@ void TcpServer::removeConnection(const TcpConnectionPtr &conn)
 void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
 {
     m_connections.erase(conn->fd());
-
+    
+    if (m_closeCallback) {
+        m_closeCallback(conn); // 通知用户连接已断开
+    }
+    
     auto ioLoop = conn->getLoop();
     ioLoop->queueInLoop([conn]() { conn->connectDestroyed(); });
 }

@@ -33,6 +33,11 @@ namespace inet
         {
             m_writeCompleteCallback = cb;
         }
+        
+        void setCloseCallback(const CloseCallback &cb)
+        {
+            m_closeCallback = cb;
+        }
 
         EventLoop *getLoop() const { return m_loop; }
 
@@ -51,6 +56,7 @@ namespace inet
         WriteCompleteCallback m_writeCompleteCallback;
         MessageCallback m_messageCallback;
         ConnectionCallback m_connectionCallback;
+        CloseCallback m_closeCallback; 
 
         void newConnection(int sockfd, const InetAddress &peerAddr);
         void removeConnection(const TcpConnectionPtr &conn);
